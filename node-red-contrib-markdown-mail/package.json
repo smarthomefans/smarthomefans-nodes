@@ -1,0 +1,32 @@
+{
+  "name": "node-red-contrib-markdown-mail",
+  "version": "1.0.0",
+  "description": "pushbear邮件模板",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smarthomefans/smarthomefans-nodes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/smarthomefans/smarthomefans-nodes/issues"
+  },
+  "keywords": [
+    "node-red",
+    "pushbear",
+    "markdown-mail"
+  ],
+  "node-red": {
+    "nodes": {
+      "pushbear": "markdown-mail.js"
+    }
+  },
+  "author": "yaming116",
+  "license": "MIT",
+  "dependencies": {
+    "marked": "^0.6.2",
+    "mustache": "^3.0.1"
+  }
+}
