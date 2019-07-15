@@ -1,0 +1,93 @@
+<script type="text/javascript">
+
+    RED.nodes.registerType('ezviz-ys7', {
+        category: '萤石',
+        color: '#7ac6cb',
+        paletteLabel: '萤石指纹锁',
+        label() {
+            return this.name || '萤石指纹锁'
+        },
+        defaults: {
+            name: {
+                value: ''
+            },
+            ezviz: {
+                value: '',
+                type: 'ezviz-configurator'
+            },
+            deviceSerial: {
+                value: ''
+            },
+          
+        },
+        inputs: 1,
+        outputs: 2,
+        icon: 'white-globe.png'
+    })
+
+</script>
+
+<script type="text/x-red" data-template-name="ezviz-ys7">
+      <div class="form-row">
+        <label for="node-input-ezviz"><i class="icon-tag"></i>配置</label>
+        <input type="text" id="node-input-ezviz">
+      </div>
+      <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i>名称</label>
+        <input type="text" id="node-input-name">
+      </div>
+      <div class="form-row">
+        <label for="node-input-deviceSerial"><i class="icon-tag"></i>序列号</label>
+        <input type="text" id="node-input-deviceSerial" placeholder="设备序列号,存在英文字母的设备序列号，字母需为大写">
+      </div>
+     
+      <div class="form-row">
+        <label style="width: 100%;text-align: right;padding-right: 34px;box-sizing: border-box;" >
+          <a href="https://bbs.iobroker.cn/thread-195-1-1.html" target="_blank">手摸手图文教程 (ioBroker中国|智能家居)提供</a>
+        </label>
+      </div>
+</script>
+<script type="text/x-red" data-help-name="ezviz-ys7">
+        <p>该接口用于分页获取指纹锁所在门的开门记录</p>
+        <h3>输入</h3>
+        <dl class="message-properties">
+            <dt>payload
+                <span class="property-type">string</span>
+            </dt>
+            <dd>萤石云设备序列号</dd>
+          
+        </dl>
+        <h3>输出</h3>
+        <p>当发生错误的时候，将会从输出2里面输出msg.payload = {} ,如果需要请做相关业务处理</p>
+        <p>默认payload里面包含last和diff</p>
+        <p>last: 最后打开门的人员信息</p>
+        <p>diff: 是本地打开人员和上次不同的信息，默认没有缓存会展示最后20条信息</p>
+        <table>
+            <thead>
+                <tr>
+                    <th style="text-align:left">key</th>
+                    <th style="text-align:left">类型</th>
+                    <th style="text-align:center">备注</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="text-align:left">lockUserName</td>
+                    <td style="text-align:left">String</td>
+                    <td style="text-align:center">用户名</td>
+                </tr>
+                <tr>
+                    <td style="text-align:left">openType</td>
+                    <td style="text-align:left">Integer</td>
+                    <td style="text-align:center">开锁方式(0-指纹 1-密码 2-卡)</td>
+                </tr>
+                <tr>
+                    <td style="text-align:left">openTime</td>
+                    <td style="text-align:left">Long</td>
+                    <td style="text-align:center">开锁时间,时间格式为1457420564508,精确到毫秒</td>
+                </tr>
+            </tbody>
+        </table>
+
+        
+</script>

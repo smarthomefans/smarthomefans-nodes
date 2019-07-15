@@ -1,0 +1,43 @@
+<script type="text/javascript">
+RED.nodes.registerType('ezviz-configurator', {
+  category: 'config',
+  label () {
+    return this.name || '默认萤石配置'
+  },
+  defaults: {
+    name: {
+      value: ''
+    },
+    client_id: {
+      value: ''
+    },
+    client_secret: {
+      value: ''
+    }
+  }
+})
+</script>
+  <script type="text/x-red" data-template-name="ezviz-configurator">
+    <div class="form-row">
+      <label for="node-config-input-name"><i class="icon-tag"></i>名称</label>
+      <input type="text" id="node-config-input-name" placeholder="默认萤石配置">
+    </div>
+    <div class="form-row">
+      <label for="node-config-input-client_id"><i></i>appKey</label>
+      <input type="text" id="node-config-input-client_id" placeholder="萤石API Key">
+    </div>
+    <div class="form-row">
+      <label for="node-config-input-client_secret"><i></i>appSecret</label>
+      <input type="text" id="node-config-input-client_secret" placeholder="萤石Secret Key">
+    </div>
+    <div class="form-row">
+      <label style="width: 100%;text-align: right;padding-right: 34px;box-sizing: border-box;" >
+        <a href="https://bbs.iobroker.cn/thread-195-1-1.html" target="_blank">手摸手图文教程 (ioBroker中国|智能家居)提供</a>
+      </label>
+    </div>
+  </script>
+  <script type="text/x-red" data-help-name="ezviz-configurator">
+    <p>百度配置节点</p>
+    <p>和iobroker开发者一起聊天，快来加入吧</p>
+    <img src="https://i.loli.net/2018/12/28/5c25b8bf1e78d.jpg"/>
+  </script>
