@@ -1,0 +1,108 @@
+<script type="text/javascript">
+
+    RED.nodes.registerType('xiaoai-tts', {
+        category: '小米',
+        color: '#7ac6cb',
+        paletteLabel: '小爱tts',
+        label() {
+            return this.name || '小爱tts'
+        },
+        defaults: {
+            name: {
+                value: ''
+            },
+            xiaoai: {
+                value: '',
+                type: 'xiaoai-tts-configurator'
+            },
+            tts: {
+                value: ''
+            },
+            device: {
+                value: ''
+            }
+          
+        },
+        inputs: 1,
+        outputs: 2,
+        icon: 'white-globe.png'
+    })
+
+    RED.nodes.registerType('xiaoai-devices', {
+        category: '小米',
+        color: '#7ac6cb',
+        paletteLabel: '设备列表',
+        label() {
+            return this.name || '设备列表'
+        },
+        defaults: {
+            name: {
+                value: ''
+            },
+            xiaoai: {
+                value: '',
+                type: 'xiaoai-tts-configurator'
+            }
+          
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: 'white-globe.png'
+    })
+
+</script>
+
+<script type="text/x-red" data-template-name="xiaoai-tts">
+      <div class="form-row">
+        <label for="node-input-xiaoai"><i class="icon-tag"></i>配置</label>
+        <input type="text" id="node-input-xiaoai">
+      </div>
+      <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i>名称</label>
+        <input type="text" id="node-input-name">
+      </div>
+      <div class="form-row">
+        <label for="node-input-tts"><i class="icon-tag"></i>tts文本</label>
+        <input type="text" id="node-input-tts" placeholder="需要tts的文本">
+      </div>
+
+      <div class="form-row">
+        <label for="node-input-device"><i class="icon-tag"></i>默认设备</label>
+        <input type="text" id="node-input-device" placeholder="默认设备id">
+      </div>
+     
+      <div class="form-row">
+        <label style="width: 100%;text-align: right;padding-right: 34px;box-sizing: border-box;" >
+          <a href="https://bbs.iobroker.cn/thread-195-1-1.html" target="_blank">手摸手图文教程 (ioBroker中国|智能家居)提供</a>
+        </label>
+      </div>
+</script>
+<script type="text/x-red" data-help-name="xiaoai-tts">
+        
+
+        
+</script>
+
+
+<script type="text/x-red" data-template-name="xiaoai-devices">
+    <div class="form-row">
+      <label for="node-input-xiaoai"><i class="icon-tag"></i>配置</label>
+      <input type="text" id="node-input-xiaoai">
+    </div>
+    <div class="form-row">
+      <label for="node-input-name"><i class="icon-tag"></i>名称</label>
+      <input type="text" id="node-input-name">
+    </div>
+   
+    <div class="form-row">
+      <label style="width: 100%;text-align: right;padding-right: 34px;box-sizing: border-box;" >
+        <a href="https://bbs.iobroker.cn/thread-195-1-1.html" target="_blank">手摸手图文教程 (ioBroker中国|智能家居)提供</a>
+      </label>
+    </div>
+</script>
+<script type="text/x-red" data-help-name="xiaoai-devices">
+      
+
+      
+</script>
+

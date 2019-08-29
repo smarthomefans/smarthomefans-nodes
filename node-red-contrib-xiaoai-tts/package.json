@@ -1,7 +1,7 @@
 {
-  "name": "node-red-contrib-ezviz",
+  "name": "node-red-contrib-xiaoai-tts",
   "version": "1.0.0",
-  "description": "萤石指纹锁开门记录",
+  "description": "小爱tts",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -15,8 +15,8 @@
   ],
   "node-red": {
     "nodes": {
-      "ezviz-ys7": "ezviz-ys7.js",
-      "ezviz-configurator": "ezviz-configurator.js"
+      "xiaoai-tts": "xiaoai-tts.js",
+      "xiaoai-tts-configurator": "xiaoai-tts-configurator.js"
     }
   },
   "bugs": {
@@ -25,10 +25,7 @@
   "author": "yaming116",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.18.0",
-    "eslint-utils": "^1.4.2",
-    "lodash": "^4.17.14",
-    "moment": "^2.24.0"
+    "xiaoai-tts": "^0.1.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
