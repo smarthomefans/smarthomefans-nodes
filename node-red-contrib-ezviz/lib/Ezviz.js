@@ -1,13 +1,13 @@
 const axios = require('axios')
-const moment = require('moment');
+const moment = require('moment')
 // Load method categories.
-const array = require('lodash/array');
+const array = require('lodash/array')
 const EzvizCode = require('./EzvizCode')
 
-//有效期7天，提前10s更新
+// 有效期7天，提前10s更新
 const EXPIRE_TIME = 1000 * 3600 * 24 * 7 - (10 * 1000)
-//打开方式
-const openType = {0: '指纹', 1: '密码', 2: '卡'}
+// 打开方式
+const openType = { 0: '指纹', 1: '密码', 2: '卡' }
 
 class EzvizClass {
   constructor (node, config) {
@@ -26,7 +26,7 @@ class EzvizClass {
           resolve(cache.token)
           return
         }
-        const { data } = await axios.post(`https://open.ys7.com/api/lapp/token/get?appKey=${client_id}&appSecret=${client_secret}`,{
+        const { data } = await axios.post(`https://open.ys7.com/api/lapp/token/get?appKey=${client_id}&appSecret=${client_secret}`, {
           params: { grant_type: 'client_credentials' },
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }).catch(err => {
@@ -48,10 +48,8 @@ class EzvizClass {
     })
   }
 
-
-  openList(config){
+  openList (config) {
     return new Promise(async (resolve, reject) => {
-
       try {
         const token = await this.getToken()
 
@@ -67,29 +65,28 @@ class EzvizClass {
         }
         let res = data.data
         if (res) {
-          res = res.map(function(item) {
+          res = res.map(function (item) {
             item.type = openType[item.openType]
             item.date = moment(item.openTime).format('YYYY-MM-DD HH:mm:ss')
             return item
-            })
-        }else {
+          })
+        } else {
           throw new Error(`[萤石keylock]无数据`)
         }
         const { set: setCache, get: getCache } = this.node.context().global
         const { client_id } = this.config
         const cache_key = `ys7-openData-${client_id}`
         const cache = getCache(cache_key) || []
-        //对比和上次差异的数据
-        let diff = array.differenceBy(res, cache, 'openTime')
+        // 对比和上次差异的数据
+        const diff = array.differenceBy(res, cache, 'openTime')
 
         setCache(cache_key, res)
 
-        resolve({last: res[0], diff})
+        resolve({ last: res[0], diff })
       } catch (error) {
-        reject(error) 
+        reject(error)
       }
     })
   }
-
 }
 module.exports = EzvizClass
