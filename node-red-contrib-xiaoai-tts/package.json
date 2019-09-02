@@ -25,8 +25,8 @@
   "author": "yaming116",
   "license": "MIT",
   "dependencies": {
-    "xiaoai-tts": "^0.1.0",
-    "mkdirp": "^0.5.1"
+    "mkdirp": "^0.5.1",
+    "node-fetch": "^2.4.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
