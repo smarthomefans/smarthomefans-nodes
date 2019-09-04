@@ -88,5 +88,27 @@ class EzvizClass {
       }
     })
   }
+
+  captureImage (config) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const token = await this.getToken()
+
+        const { data } = await axios.post(`https://open.ys7.com/api/lapp/device/capture?accessToken=${token}&deviceSerial=${config.payload}&channelNo=${config.channelNo}`, {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }).catch(err => {
+          throw new Error(`[萤石capture]${err}`)
+        })
+
+        if (data.code != 200) {
+          const msg = EzvizCode[data.code] || data.msg
+          throw new Error(`[萤石capture]${msg}`)
+        }
+        resolve(data.data)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
 }
 module.exports = EzvizClass
