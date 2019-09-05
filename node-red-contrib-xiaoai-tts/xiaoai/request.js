@@ -8,6 +8,7 @@ class HttpError extends Error {
     super()
 
     this.rep = rep
+    this.status = rep.status
     this.message = [
       'Request Error',
       `url: ${rep.url}`,

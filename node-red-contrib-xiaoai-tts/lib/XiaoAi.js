@@ -50,6 +50,7 @@ class XiaoAi {
       mkdirp.sync(parentDir)
       const path = `${parentDir}/${this.config.username}`
       fs.writeFileSync(path, JSON.stringify({}))
+      this.client = null
     } catch (error) {
       // ignore
     }

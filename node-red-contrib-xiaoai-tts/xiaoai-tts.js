@@ -75,14 +75,16 @@ module.exports = RED => {
           if (err instanceof XiaoAiError) {
             node.status({ text: '用户名密码错误', fill: 'red', shape: 'ring' })
           } else {
-            if (err.status && err.status == 401) {
+           
+            if (err.status && err.status == '401') {
               node.status({ text: '授权信息失效', fill: 'red', shape: 'ring' })
               xiaoai.clean()
-
               if (!isCleanToken) {
                 processQ(msg)
+                isCleanToken = true
+                return
               }
-              isCleanToken = true
+              
             } else {
               node.status({ text: err.message, fill: 'red', shape: 'ring' })
             }
@@ -95,7 +97,7 @@ module.exports = RED => {
         } finally {
           setTimeout(_ => {
             done()
-          }, msg.sleepTime)
+          }, msg.sleepTime || 10)
         }
       }
 
