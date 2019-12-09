@@ -52,6 +52,38 @@
         outputs: 2,
         icon: 'white-globe.png'
     })
+  
+    RED.nodes.registerType('ezviz-preset-move', {
+        category: '萤石',
+        color: '#7ac6cb',
+        paletteLabel: '萤石云台移动到预设点',
+        label() {
+            return this.name || '萤石云台移动到预设点'
+        },
+        defaults: {
+            name: {
+                value: ''
+            },
+            ezviz: {
+                value: '',
+                type: 'ezviz-configurator'
+            },
+            deviceSerial: {
+                value: ''
+            },
+            channelNo: {
+                value: 1
+            },
+            index: {
+                value: 1
+            }
+          
+        },
+        inputs: 1,
+        outputs: 2,
+        icon: 'white-globe.png'
+    })
+
 
 </script>
 
@@ -175,7 +207,52 @@
               </tr>
             
           </tbody>
-      </table>
-
-      
+      </table>      
 </script>
+<script type="text/x-red" data-template-name="ezviz-preset-move">
+    <div class="form-row">
+      <label for="node-input-ezviz"><i class="icon-tag"></i>配置</label>
+      <input type="text" id="node-input-ezviz">
+    </div>
+    <div class="form-row">
+      <label for="node-input-name"><i class="icon-tag"></i>名称</label>
+      <input type="text" id="node-input-name">
+    </div>
+    <div class="form-row">
+      <label for="node-input-deviceSerial"><i class="icon-tag"></i>序列号</label>
+      <input type="text" id="node-input-deviceSerial" placeholder="设备序列号,存在英文字母的设备序列号，字母需为大写">
+    </div>
+    <div class="form-row">
+        <label for="node-input-channelNo"><i class="icon-tag"></i>通道号</label>
+        <input type="number" id="node-input-channelNo" placeholder="通道号，IPC设备填写1">
+    </div>
+	<div class="form-row">
+        <label for="node-input-index"><i class="icon-tag"></i>预置点</label>
+        <input type="number" id="node-input-index" placeholder="预置点">
+    </div>
+   
+    <div class="form-row">
+      <label style="width: 100%;text-align: right;padding-right: 34px;box-sizing: border-box;" >
+        <a href="https://bbs.iobroker.cn/thread-323-1-1.html" target="_blank">手摸手图文教程 (ioBroker中国|智能家居)提供</a>
+      </label>
+    </div>
+</script>
+<script type="text/x-red" data-help-name="ezviz-preset-move">
+      <p>移动云台到预置点</p>
+      <p>注意：请勿频繁调用，频繁调用将会被拉入限制黑名单,建议调用的间隔为4s左右。</p>
+      <h3>输入</h3>
+      <dl class="message-properties">
+          <dt>payload
+              <span class="property-type">string</span>
+          </dt>
+          <dd>萤石云设备序列号</dd>
+		  <dt>index
+              <span class="property-type">string</span>
+          </dt>
+          <dd>预置点号</dd>
+        
+      </dl>
+      <h3>输出</h3>
+      <p>当发生错误的时候，将会从输出2里面输出msg.payload = {} ,如果需要请做相关业务处理</p> 
+</script>
+
