@@ -110,7 +110,7 @@ class EzvizClass {
       }
     })
   }
-   //云台控制（调用预置点）
+  //云台控制（调用预置点）
   presetMove (config) {
     return new Promise(async (resolve, reject) => {
       try {
@@ -132,5 +132,84 @@ class EzvizClass {
       }
     })
   }
+
+  //获取摄像头列表
+  cameraList (config) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const token = await this.getToken()
+        var url = `https://open.ys7.com/api/lapp/camera/list?accessToken=${token}`
+        if(config.pageStart != null){
+            url += "&pageStart="+config.pageStart
+        }
+        if(config.pageSize != null){
+            url += "&pageSize="+config.pageSize
+        }
+        const { data } = await axios.post(url, {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }).catch(err => {
+          throw new Error(`[萤石capture]${err}`)
+        })
+
+        if (data.code != 200) {
+          const msg = EzvizCode[data.code] || data.msg
+          throw new Error(`[萤石capture]${msg}`)
+        }
+        resolve(data.data)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
+  //获取镜头遮蔽开关状态
+  sceneSwitchStatus (config) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const token = await this.getToken()
+
+        const { data } = await axios.post(`https://open.ys7.com/api/lapp/device/scene/switch/status?accessToken=${token}&deviceSerial=${config.payload}`, {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }).catch(err => {
+          throw new Error(`[萤石capture]${err}`)
+        })
+
+        if (data.code != 200) {
+          const msg = EzvizCode[data.code] || data.msg
+          throw new Error(`[萤石capture]${msg}`)
+        }
+        resolve(data.data)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
+  //设置镜头遮蔽开关
+  sceneSwitchSet (config) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const token = await this.getToken()
+        var url = `https://open.ys7.com/api/lapp/device/scene/switch/set?accessToken=${token}&deviceSerial=${config.payload}&enable=${config.enable}`
+        if(config.channelNo != null ){
+          url = url += "&channelNo="+config.channelNo
+        }
+        const { data } = await axios.post(url, {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }).catch(err => {
+          throw new Error(`[萤石capture]${err}`)
+        })
+
+        if (data.code != 200) {
+          const msg = EzvizCode[data.code] || data.msg
+          throw new Error(`[萤石capture]${msg}`)
+        }
+        resolve(data.data)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
 }
 module.exports = EzvizClass
