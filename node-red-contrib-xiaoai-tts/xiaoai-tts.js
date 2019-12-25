@@ -17,7 +17,7 @@ module.exports = RED => {
           node.send([data, null])
         } catch (err) {
           if (err instanceof XiaoAiError) {
-            node.status({ text: '用户名密码错误', fill: 'red', shape: 'ring' })
+            node.status({ text: '用户名密码错误，请xiaomi网站登陆尝试', fill: 'red', shape: 'ring' })
           } else {
             if (err.status && err.status == 401) {
               node.status({ text: '授权信息失效', fill: 'red', shape: 'ring' })
@@ -41,7 +41,7 @@ module.exports = RED => {
       RED.nodes.createNode(node, config)
       const xiaomiConfig = RED.nodes.getNode(config.xiaoai)
       const xiaoai = new Xiaoai(node, xiaomiConfig)
-      // 是否清空缓存授权信息
+      // 是否清空缓存授权信息, token失效的时候不能删除本条消息，需要再一遍发送尝试
       let isCleanToken = false
       node.msgQueue = []
       node.on('input', data => {
@@ -66,21 +66,21 @@ module.exports = RED => {
 
       async function processMsg (msg, done) {
         try {
+          isCleanToken = false
           const res = await xiaoai.tts(msg.payload, msg.device)
           msg.res = res
           node.status({ text: `tts 成功:${msg._msgid}` })
-          isCleanToken = false
+          
           node.send([msg, null])
         } catch (err) {
           if (err instanceof XiaoAiError) {
-            node.status({ text: '用户名密码错误', fill: 'red', shape: 'ring' })
+            node.status({ text: '用户名密码错误或系统错误，请xiaomi网站登陆尝试', fill: 'red', shape: 'ring' })
           } else {
            
             if (err.status && err.status == '401') {
               node.status({ text: '授权信息失效', fill: 'red', shape: 'ring' })
               xiaoai.clean()
               if (!isCleanToken) {
-                processQ(msg)
                 isCleanToken = true
                 return
               }
@@ -95,16 +95,21 @@ module.exports = RED => {
           msg.error_msg = err.message
           node.send([null, msg])
         } finally {
-          setTimeout(_ => {
-            done()
-          }, msg.sleepTime || 10)
+          (function(status){
+            setTimeout(_ => {
+              done(status)
+            }, msg.sleepTime || 10)
+          })(isCleanToken)
+          
         }
       }
 
       function processQ (queue) {
         var msg = queue[0]
-        processMsg(msg, function () {
-          queue.shift()
+        processMsg(msg, function (status) {
+          if(!status) {
+            queue.shift()
+          }
           if (queue.length > 0) {
             processQ(queue)
           }
