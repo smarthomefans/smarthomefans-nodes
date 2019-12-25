@@ -66,11 +66,11 @@ module.exports = RED => {
 
       async function processMsg (msg, done) {
         try {
-          isCleanToken = false
+          
           const res = await xiaoai.tts(msg.payload, msg.device)
           msg.res = res
           node.status({ text: `tts 成功:${msg._msgid}` })
-          
+          isCleanToken = false
           node.send([msg, null])
         } catch (err) {
           if (err instanceof XiaoAiError) {
@@ -80,10 +80,15 @@ module.exports = RED => {
             if (err.status && err.status == '401') {
               node.status({ text: '授权信息失效', fill: 'red', shape: 'ring' })
               xiaoai.clean()
+              //发现上次tts成功，这次失败了，记录状态，开始重试
               if (!isCleanToken) {
                 isCleanToken = true
                 return
+              }else {
+                //当第二次尝试tts本条数据的时候，发现登陆信息还是异常的，这时候丢弃这次消息并当tts失败
+                isCleanToken = false
               }
+              
               
             } else {
               node.status({ text: err.message, fill: 'red', shape: 'ring' })
