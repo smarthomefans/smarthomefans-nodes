@@ -1,0 +1,77 @@
+<script type="text/javascript">
+
+RED.nodes.registerType('xiaoai-wakeup-tv', {
+  category: '小米',
+  color: '#7ac6cb',
+  paletteLabel: '小爱wakeup-tv',
+  label () {
+    return this.name || '小爱wakeup-tv'
+  },
+  defaults: {
+    name: {
+      value: ''
+    },
+    xiaoai: {
+      value: '',
+      type: 'xiaoai-tts-configurator'
+    },
+    mac: {
+      value: ''
+    },
+    device: {
+      value: ''
+    }
+
+  },
+  inputs: 1,
+  outputs: 2,
+  icon: 'white-globe.png'
+})
+
+</script>
+
+    <script type="text/x-red" data-template-name="xiaoai-wakeup-tv">
+          <div class="form-row">
+            <label for="node-input-xiaoai"><i class="icon-tag"></i>配置</label>
+            <input type="text" id="node-input-xiaoai">
+          </div>
+          <div class="form-row">
+            <label for="node-input-name"><i class="icon-tag"></i>名称</label>
+            <input type="text" id="node-input-name">
+          </div>
+          <div class="form-row">
+            <label for="node-input-mac"><i class="icon-tag"></i>mac</label>
+            <input type="text" id="node-input-mac" placeholder="电视的mac地址"">
+          </div>
+
+          <div class="form-row">
+            <label for="node-input-device"><i class="icon-tag"></i>默认设备</label>
+            <input type="text" id="node-input-device" placeholder="默认设备id">
+          </div>
+
+          <div class="form-row">
+            <label style="width: 100%;text-align: right;padding-right: 34px;box-sizing: border-box;" >
+              <a href="https://bbs.iobroker.cn" target="_blank">此节点由 (ioBroker中国|智能家居)提供</a>
+            </label>
+          </div>
+    </script>
+    <script type="text/x-red" data-help-name="xiaoai-wakeup-tv">
+      <p>小爱音箱 wakeup tv</p>
+      <h3>输入</h3>
+      <dl class="message-properties">
+          <dt>payload
+              <span class="property-type">string</span>
+          </dt>
+          <dd>电视的mac地址</dd>
+          <dt>device
+            <span class="property-type">string</span>
+          </dt>
+          <dd>设备唯一标识,用户指定tts设备</dd>
+
+      </dl>
+      <h3>输出</h3>
+      <p>当发生错误的时候，将会从输出2里面输出msg.payload = {} ,如果需要请做相关业务处理</p>
+      <p>其余信息查看输出</p>
+
+    </script>
+

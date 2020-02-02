@@ -16,6 +16,9 @@
   "node-red": {
     "nodes": {
       "xiaoai-tts": "xiaoai-tts.js",
+      "xiaoai-mibrain": "xiaoai-mibrain.js",
+      // "xiaoai-mibt": "xiaoai-mibt.js",
+      "xiaoai-mediaplayer": "xiaoai-mediaplayer.js",
       "xiaoai-tts-configurator": "xiaoai-tts-configurator.js"
     }
   },
