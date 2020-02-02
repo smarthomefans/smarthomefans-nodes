@@ -2,8 +2,8 @@ const Xiaoai = require('./lib/XiaoAi')
 const MessageProcess = require('./lib/MessageProcess')
 const XiaoAiError = require('./xiaoai/XiaoAiError')
 module.exports = RED => {
-  // devices list
-  RED.nodes.registerType('xiaoai-devices', class {
+  // nlp-result
+  RED.nodes.registerType('xiaoai-nlp-result', class {
     constructor (config) {
       const node = this
       RED.nodes.createNode(node, config)
@@ -11,10 +11,13 @@ module.exports = RED => {
       const xiaomiConfig = RED.nodes.getNode(config.xiaoai)
       const xiaoai = new Xiaoai(node, xiaomiConfig)
       node.on('input', async data => {
+        for (const key in config) { if (config[key] != '' && config[key] != null) { data[key] = config[key] } }
+        data.payload = data.device || data.payload
+
         try {
-          const res = await xiaoai.deviceList()
+          const res = await xiaoai.nlpResule(data.device)
           data.res = res
-          node.status({ text: `获取设备列表成功:${data._msgid}` })
+          node.status({ text: `获取nlp结果成功:${data._msgid}` })
           node.send([data, null])
         } catch (err) {
           if (err instanceof XiaoAiError) {
@@ -36,20 +39,29 @@ module.exports = RED => {
     }
   })
 
-  // tts
-  RED.nodes.registerType('xiaoai-tts', class {
+  // ai service
+  RED.nodes.registerType('xiaoai-ai-service', class {
     constructor (config) {
       const node = this
       RED.nodes.createNode(node, config)
       const xiaomiConfig = RED.nodes.getNode(config.xiaoai)
       const messageProcess = new MessageProcess(node, xiaomiConfig)
+      messageProcess.changeType()
 
       node.on('input', data => {
         for (const key in config) { if (config[key] != '' && config[key] != null) { data[key] = config[key] } }
-        data.payload = data.tts || data.payload
-        // 默认等待时间1s
-        if (!data.sleepTime) {
-          data.sleepTime = 1000
+        data.payload = data.message || data.payload
+        // 修正数据格式
+        if (data.tts) {
+          data.tts = 1
+        } else {
+          data.tts = 0
+        }
+
+        if (data.tts_play) {
+          data.tts_play = 1
+        } else {
+          data.tts_play = 0
         }
         messageProcess.say(data)
       })

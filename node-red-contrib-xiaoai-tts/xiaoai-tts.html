@@ -1,54 +1,54 @@
 <script type="text/javascript">
 
-  RED.nodes.registerType('xiaoai-tts', {
-    category: '小米',
-    color: '#7ac6cb',
-    paletteLabel: '小爱tts',
-    label() {
-      return this.name || '小爱tts'
+RED.nodes.registerType('xiaoai-tts', {
+  category: '小米',
+  color: '#7ac6cb',
+  paletteLabel: '小爱tts',
+  label () {
+    return this.name || '小爱tts'
+  },
+  defaults: {
+    name: {
+      value: ''
     },
-    defaults: {
-      name: {
-        value: ''
-      },
-      xiaoai: {
-        value: '',
-        type: 'xiaoai-tts-configurator'
-      },
-      tts: {
-        value: ''
-      },
-      device: {
-        value: ''
-      }
+    xiaoai: {
+      value: '',
+      type: 'xiaoai-tts-configurator'
+    },
+    tts: {
+      value: ''
+    },
+    device: {
+      value: ''
+    }
 
-    },
-    inputs: 1,
-    outputs: 2,
-    icon: 'white-globe.png'
-  })
+  },
+  inputs: 1,
+  outputs: 2,
+  icon: 'white-globe.png'
+})
 
-  RED.nodes.registerType('xiaoai-devices', {
-    category: '小米',
-    color: '#7ac6cb',
-    paletteLabel: '设备列表',
-    label() {
-      return this.name || '设备列表'
+RED.nodes.registerType('xiaoai-devices', {
+  category: '小米',
+  color: '#7ac6cb',
+  paletteLabel: '设备列表',
+  label () {
+    return this.name || '设备列表'
+  },
+  defaults: {
+    name: {
+      value: ''
     },
-    defaults: {
-      name: {
-        value: ''
-      },
-      xiaoai: {
-        value: '',
-        type: 'xiaoai-tts-configurator'
-      }
+    xiaoai: {
+      value: '',
+      type: 'xiaoai-tts-configurator'
+    }
 
-    },
-    inputs: 1,
-    outputs: 1,
-    icon: 'white-globe.png'
-  })
+  },
+  inputs: 1,
+  outputs: 1,
+  icon: 'white-globe.png'
+})
 
 </script>
 
@@ -70,7 +70,7 @@
         <label for="node-input-device"><i class="icon-tag"></i>默认设备</label>
         <input type="text" id="node-input-device" placeholder="默认设备id">
       </div>
-     
+
       <div class="form-row">
         <label style="width: 100%;text-align: right;padding-right: 34px;box-sizing: border-box;" >
           <a href="https://bbs.iobroker.cn" target="_blank">此节点由 (ioBroker中国|智能家居)提供</a>
@@ -94,15 +94,13 @@
         <span class="property-type">number</span>
       </dt>
       <dd>消息播报之间时间间隔, 默认1s</dd>
-    
+
   </dl>
   <h3>输出</h3>
   <p>当发生错误的时候，将会从输出2里面输出msg.payload = {} ,如果需要请做相关业务处理</p>
   <p>其余信息查看输出</p>
 
-        
 </script>
-
 
 <script type="text/x-red" data-template-name="xiaoai-devices">
     <div class="form-row">
@@ -113,7 +111,7 @@
       <label for="node-input-name"><i class="icon-tag"></i>名称</label>
       <input type="text" id="node-input-name">
     </div>
-   
+
     <div class="form-row">
       <label style="width: 100%;text-align: right;padding-right: 34px;box-sizing: border-box;" >
         <a href="https://bbs.iobroker.cn" target="_blank">此节点由 (ioBroker中国|智能家居)提供</a>
@@ -123,5 +121,5 @@
 <script type="text/x-red" data-help-name="xiaoai-devices">
 
   <p>获取小爱音箱设备列表信息,这个用于tts手动选择设备</p>
-      
+
 </script>

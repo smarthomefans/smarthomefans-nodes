@@ -85,6 +85,59 @@ class XiaoAi {
       }
     })
   }
+
+  nlpResule (deviceId) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!this.client) {
+          await this.getSession()
+        }
+
+        const data = await this.client.nlpResult(deviceId)
+        resolve(data)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
+  aiService (message, tts, tts_play, deviceId) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!this.client) {
+          await this.getSession()
+        }
+
+        const data = await this.client.aiService(message, tts, tts_play, deviceId)
+        resolve(data)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
+  wakteupTV (mac, deviceId) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!this.client) {
+          await this.getSession()
+        }
+
+        const data = await this.client.wakeupTV(mac, deviceId)
+        resolve(data)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
+  mediaplayer (action) {
+    return this.client[action]
+  }
+
+  async mediaplayer1 (action, device) {
+    return await this.client[action](device)
+  }
 }
 
 module.exports = XiaoAi

@@ -1,0 +1,86 @@
+<script type="text/javascript">
+
+RED.nodes.registerType('xiaoai-mediaplayer', {
+  category: '小米',
+  color: '#7ac6cb',
+  paletteLabel: '小爱-mediaplayer',
+  label () {
+    return this.name || '小爱-mediaplayer'
+  },
+  defaults: {
+    name: {
+      value: ''
+    },
+    xiaoai: {
+      value: '',
+      type: 'xiaoai-tts-configurator'
+    },
+    action: {
+      value: ''
+    },
+    device: {
+      value: ''
+    }
+
+  },
+  inputs: 1,
+  outputs: 2,
+  icon: 'white-globe.png'
+})
+
+</script>
+
+  <script type="text/x-red" data-template-name="xiaoai-mediaplayer">
+        <div class="form-row">
+          <label for="node-input-xiaoai"><i class="icon-tag"></i>配置</label>
+          <input type="text" id="node-input-xiaoai">
+        </div>
+        <div class="form-row">
+          <label for="node-input-name"><i class="icon-tag"></i>名称</label>
+          <input type="text" id="node-input-name">
+        </div>
+
+        <div class="form-row">
+          <label for="node-input-action"><i class="fa fa-code-fork"></i>操作</label>
+          <select type="text" id="node-input-action" style="width:70%">
+              <option value="" >msg.action</option>
+              <option value="play" >play</option>
+              <option value="pause" >pause</option>
+              <option value="playStatus" >playStatus</option>
+              <option value="prev" >prev</option>
+              <option value="next" >next</option>
+              <option value="toggle" >toggle</option>
+          </select>
+      </div>
+
+        <div class="form-row">
+          <label for="node-input-device"><i class="icon-tag"></i>默认设备</label>
+          <input type="text" id="node-input-device" placeholder="默认设备id">
+        </div>
+
+        <div class="form-row">
+          <label style="width: 100%;text-align: right;padding-right: 34px;box-sizing: border-box;" >
+            <a href="https://bbs.iobroker.cn" target="_blank">此节点由 (ioBroker中国|智能家居)提供</a>
+          </label>
+        </div>
+  </script>
+  <script type="text/x-red" data-help-name="xiaoai-mediaplayer">
+    <p>小爱音箱播放器操作节点，目前支持播放，暂停，上一曲，下一曲，状态反转等操作指令</p>
+    <h3>输入</h3>
+    <dl class="message-properties">
+        <dt>action
+            <span class="property-type">string</span>
+        </dt>
+        <dd>操作类型</dd>
+        <dt>device
+          <span class="property-type">string</span>
+        </dt>
+        <dd>设备唯一标识,用户指定tts设备</dd>
+
+    </dl>
+    <h3>输出</h3>
+    <p>当发生错误的时候，将会从输出2里面输出msg.payload = {} ,如果需要请做相关业务处理</p>
+    <p>其余信息查看输出</p>
+
+  </script>
+

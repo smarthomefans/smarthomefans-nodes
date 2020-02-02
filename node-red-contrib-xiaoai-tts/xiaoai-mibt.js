@@ -1,9 +1,8 @@
 const Xiaoai = require('./lib/XiaoAi')
-const MessageProcess = require('./lib/MessageProcess')
 const XiaoAiError = require('./xiaoai/XiaoAiError')
 module.exports = RED => {
   // devices list
-  RED.nodes.registerType('xiaoai-devices', class {
+  RED.nodes.registerType('xiaoai-wakeup-tv', class {
     constructor (config) {
       const node = this
       RED.nodes.createNode(node, config)
@@ -11,10 +10,13 @@ module.exports = RED => {
       const xiaomiConfig = RED.nodes.getNode(config.xiaoai)
       const xiaoai = new Xiaoai(node, xiaomiConfig)
       node.on('input', async data => {
+        for (const key in config) { if (config[key] != '' && config[key] != null) { data[key] = config[key] } }
+        data.payload = data.tts || data.payload
+
         try {
-          const res = await xiaoai.deviceList()
+          const res = await xiaoai.wakteupTV(data.payload, data.device)
           data.res = res
-          node.status({ text: `获取设备列表成功:${data._msgid}` })
+          node.status({ text: `打开电视成功:${data._msgid}` })
           node.send([data, null])
         } catch (err) {
           if (err instanceof XiaoAiError) {
@@ -32,26 +34,6 @@ module.exports = RED => {
           data.error_msg = err.message
           node.send([null, data])
         }
-      })
-    }
-  })
-
-  // tts
-  RED.nodes.registerType('xiaoai-tts', class {
-    constructor (config) {
-      const node = this
-      RED.nodes.createNode(node, config)
-      const xiaomiConfig = RED.nodes.getNode(config.xiaoai)
-      const messageProcess = new MessageProcess(node, xiaomiConfig)
-
-      node.on('input', data => {
-        for (const key in config) { if (config[key] != '' && config[key] != null) { data[key] = config[key] } }
-        data.payload = data.tts || data.payload
-        // 默认等待时间1s
-        if (!data.sleepTime) {
-          data.sleepTime = 1000
-        }
-        messageProcess.say(data)
       })
     }
   })
