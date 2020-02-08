@@ -1,0 +1,180 @@
+<script type="text/javascript">
+RED.nodes.registerType('gpsoo-monitor', {
+  category: 'gpsoo',
+  color: '#a6bbcf',
+  defaults: {
+    server: { value: '', type: 'gpsoo-configurator' },
+    name: { value: '' }
+  },
+  inputs: 1,
+  outputs: 2,
+  icon: 'monitor.png',
+  label: function () {
+    return this.name || '设备监控'
+  }
+})
+
+RED.nodes.registerType('gpsoo-address', {
+  category: 'gpsoo',
+  color: '#a6bbcf',
+  defaults: {
+    server: { value: '', type: 'gpsoo-configurator' },
+    name: { value: '' },
+    longitude: { value: '' },
+    latitude: { value: '' }
+  },
+  inputs: 1,
+  outputs: 2,
+  icon: 'address.png',
+  label: function () {
+    return this.name || '逆地理位置解析'
+  }
+})
+</script>
+
+<script type="text/x-red" data-template-name="gpsoo-monitor">
+    <div class="form-row">
+        <label for="node-input-server"><i class="icon-tag"></i> Server</label>
+        <input type="text" id="node-input-server" placeholder="Server">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-bookmark"></i> 默认名称</label>
+        <input type="text" id="node-input-name">
+    </div>
+
+</script>
+
+<script type="text/x-red" data-help-name="gpsoo-monitor">
+    <p>设备监控节点</p>
+    <p>使用登陆信息获取设备监控信息</p>
+    <table border="1">
+        <tbody><tr>
+            <th>参数名</th>
+            <th>参数类型</th>
+            <th>描述</th>
+        </tr>
+        <tr>
+            <th>ret</th>
+            <td>uint</td>
+            <td>返回码<br>
+                0: 正确返回<br>
+                其它: 失败。<a href="#block-3.5">错误码说明</a>
+            </td>
+        </tr>
+        <tr>
+            <th>msg</th>
+            <td>string</td>
+            <td>如果ret不为0，会有相应的错误信息提示</td>
+        </tr>
+        <tr>
+            <th>imei</th>
+            <td>string</td>
+            <td>设备IMEI</td>
+        </tr>
+        <tr>
+            <th>device_info</th>
+            <td>uint</td>
+            <td>0:正常数据 1:设备未上线 2:设备已过期 3:设备离线</td>
+        </tr>
+        <tr>
+            <th>device_info_new</th>
+            <td>uint</td>
+            <td>0:正常数据 1:设备未上线 2:设备已过期 3:设备离线  4:设备静止</td>
+        </tr>
+        <tr>
+            <th>gps_time</th>
+            <td>number</td>
+            <td>设备定位时间，由设备在定位数据中上报。UTC秒数(如果设备过期，值为0)
+            </td>
+        </tr>
+        <tr>
+            <th>sys_ime</th>
+            <td>number</td>
+            <td>平台收到设备上报位置数据时的系统时间。 UTC秒数(如果设备过期，值为0)
+            </td>
+        </tr>
+        <tr>
+            <th>heart_time</th>
+            <td>number</td>
+            <td>设备与平台的最后通信时间。UTC秒数(如果设备过期，值为0)
+            </td>
+        </tr>
+        <tr>
+            <th>server_time</th>
+            <td>number</td>
+            <td>当前服务器时间。UTC秒数(如果设备过期，值为0)</td>
+        </tr>
+        <tr>
+            <th>lng</th>
+            <td>number</td>
+            <td>经度 (如果设备过期，值为0)
+            </td>
+        </tr>
+        <tr>
+            <th>lat</th>
+            <td>number</td>
+            <td>纬度 (如果设备过期，值为0)
+            </td>
+        </tr>
+        <tr>
+            <th>course</th>
+            <td>number</td>
+            <td>航向(正北方向为0度，顺时针方向增大。最大值360度)<br>(如果设备过期，值为0)
+            </td>
+        </tr>
+        <tr>
+            <th>speed</th>
+            <td>number</td>
+            <td>速度 (单位:km/h)<br>(如果设备过期，值为-1)</td>
+        </tr>
+        <tr>
+            <th>status</th>
+            <td>string</td>
+            <td>设备平台状态信息，包括GPS定位状态、设备电池电量、外接电压等级、外接电池电量等信息。(如果设备过期，值为空字符串)
+            </td>
+        </tr>
+        <tr>
+            <th>acc</th>
+            <td>unit</td>
+            <td>-1，表示这个设备不支持ACC功能；否则为ACC的状态值（0=关闭，1=开启）
+            </td>
+        </tr>
+        <tr>
+            <th>acc_seconds</th>
+            <td>string</td>
+            <td>该设备切换为当前状态已经过的时长（单位：秒）
+            </td>
+        </tr>
+    </tbody></table>
+</script>
+
+<script type="text/x-red" data-template-name="gpsoo-address">
+    <div class="form-row">
+        <label for="node-input-server"><i class="icon-tag"></i> Server</label>
+        <input type="text" id="node-input-server" placeholder="Server">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-bookmark"></i> 默认名称</label>
+        <input type="text" id="node-input-name">
+    </div>
+
+     <div class="form-row">
+        <label for="node-input-longitude"><i class="icon-tag"></i>经度</label>
+        <input type="text" id="node-input-longitude" maxlength='78' placeholder="(msg.payload.longitude)">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-latitude"><i class="icon-tag"></i>纬度</label>
+        <input type="text" id="node-input-latitude" maxlength='78' placeholder="(msg.payload.latitude)">
+    </div>
+
+</script>
+
+<script type="text/x-red" data-help-name="gpsoo-address">
+    <p>逆地理位置解析</p>
+    <p>使用登陆信息获取设备经纬度逆地理位置解析</p>
+
+    <p>和iobroker开发这一起聊者，快来加入吧</p>
+    <img src="https://i.loli.net/2018/12/28/5c25b8bf1e78d.jpg"/>
+
+</script>

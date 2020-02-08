@@ -1,0 +1,48 @@
+<script type="text/javascript">
+RED.nodes.registerType('gpsoo-configurator', {
+  category: 'config',
+  defaults: {
+    name: { value: '默认账号', required: true },
+    phone: { value: '', required: true },
+    password: { value: '', required: true },
+    platform: { value: 'gpsoo' }
+  },
+  label: function () {
+    return this.name
+  }
+
+})
+</script>
+
+<script type="text/x-red" data-template-name="gpsoo-configurator">
+  <div class="form-row">
+      <label for="node-config-input-name"><i class="icon-bookmark"></i> 默认名称</label>
+      <input type="text" id="node-config-input-name">
+  </div>
+  <div class="form-row">
+      <label for="node-config-input-phone"><i class="icon-bookmark"></i>设备号 </label>
+      <input type="text" id="node-config-input-phone">
+  </div>
+  <div class="form-row">
+      <label for="node-config-input-password"><i class="icon-bookmark"></i>密码</label>
+      <input type="text" id="node-config-input-password">
+  </div>
+
+  <div class="form-row">
+    <label for="node-config-input-platform"><i class="icon-bookmark"></i>设备平台</label>
+    <select type="text" id="node-config-input-platform" style="width:70%">
+              <option value="gpsoo" >汽车在线</option>
+              <option value="gmiot" >万物在线</option>
+    </select>
+</div>
+
+</script>
+
+<script type="text/x-red" data-help-name="gpsoo-configurator">
+  <p>万物在线和汽车在线配置的设备信息</p>
+  <p>分享节点的时候一定要注意,要修改一下这里的配置,不然就暴露了</p>
+
+  <p>和iobroker开发者一起聊天，快来加入吧</p>
+  <img src="https://i.loli.net/2018/12/28/5c25b8bf1e78d.jpg"/>
+
+</script>
