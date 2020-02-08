@@ -11,8 +11,6 @@ module.exports = RED => {
         try {
           const bd = new GpsApi(node, server)
 
-          console.log(server)
-
           // 合并值
           for (const key in config) { if (config[key] != '' && config[key] != null) { data[key] = config[key] } }
 

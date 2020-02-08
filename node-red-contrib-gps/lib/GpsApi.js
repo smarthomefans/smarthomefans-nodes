@@ -2,8 +2,8 @@ const axios = require('axios')
 const CryptoJS = require('crypto-js')
 const GpsApiCode = require('./GpsApiCode')
 
-// 提前10s更新
-const EXPIRE_TIME = (10 * 1000)
+// 提前一分钟更新
+const EXPIRE_TIME = (60 * 1000)
 
 const baseUrl = { 'gpsoo': 'http://api.gpsoo.net/1',
   'gmiot': 'http://litapi.gmiot.net/1' }
@@ -20,7 +20,7 @@ class GpsApi {
     return new Promise(async (resolve, reject) => {
       try {
         const cache = getCache(cache_key)
-        if (cache && cache.time && ((cache.time - new Date().valueOf()) < EXPIRE_TIME)) {
+        if (cache && cache.time && ((cache.time - new Date().valueOf()) > EXPIRE_TIME)) {
           resolve(cache.token)
           return
         }
@@ -80,8 +80,6 @@ class GpsApi {
       try {
         const { platform } = this.config
         const access_token = await this.getToken()
-
-        console.log(`${baseUrl[platform]}/tool/address?lng=${longitude}&lat=${latitude}&access_token=${access_token}`)
 
         const { data } = await axios.get(`${baseUrl[platform]}/tool/address?lng=${longitude}&lat=${latitude}&access_token=${access_token}`, {
           headers: {
