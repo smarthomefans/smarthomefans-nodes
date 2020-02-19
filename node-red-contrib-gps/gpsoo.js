@@ -17,11 +17,18 @@ module.exports = RED => {
           // monitor
           const d = await bd.monitor()
           data.payload = {}
+          data.payload.status = 1
           data.payload.dataArray = d
-
+          const objData = {}
           if (d && d.length > 0) {
             data.payload.data = d[0]
+
+            d.forEach(element => {
+              objData[element.imei] = element
+            })
           }
+          data.objData = objData
+
           node.status({ text: `获取成功:${data._msgid}` })
           node.send([data, null])
         } catch (err) {
@@ -37,7 +44,7 @@ module.exports = RED => {
   })
 
   // captureImage
-  // monitor 监控
+  // address 地理位置逆解析
   RED.nodes.registerType('gpsoo-address', class {
     constructor (config) {
       const node = this
@@ -55,7 +62,7 @@ module.exports = RED => {
             return
           }
 
-          // monitor
+          // address
           const d = await bd.address(data.longitude, data.latitude)
           data.payload = {}
           data.payload.status = 1

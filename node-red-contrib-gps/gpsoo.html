@@ -160,12 +160,12 @@ RED.nodes.registerType('gpsoo-address', {
 
      <div class="form-row">
         <label for="node-input-longitude"><i class="icon-tag"></i>经度</label>
-        <input type="text" id="node-input-longitude" maxlength='78' placeholder="(msg.payload.longitude)">
+        <input type="text" id="node-input-longitude" maxlength='78' placeholder="(msg.longitude)">
     </div>
 
     <div class="form-row">
         <label for="node-input-latitude"><i class="icon-tag"></i>纬度</label>
-        <input type="text" id="node-input-latitude" maxlength='78' placeholder="(msg.payload.latitude)">
+        <input type="text" id="node-input-latitude" maxlength='78' placeholder="(msg.latitude)">
     </div>
 
 </script>
@@ -173,6 +173,20 @@ RED.nodes.registerType('gpsoo-address', {
 <script type="text/x-red" data-help-name="gpsoo-address">
     <p>逆地理位置解析</p>
     <p>使用登陆信息获取设备经纬度逆地理位置解析</p>
+    <h3>输入</h3>
+      <dl class="message-properties">
+          <dt>latitude
+              <span class="property-type">string</span>
+          </dt>
+          <dd>需要转换的纬度</dd>
+          <dt>longitude
+            <span class="property-type">string</span>
+          </dt>
+          <dd>需要转换的经度</dd>
+      </dl>
+      <h3>输出</h3>
+      <p>当发生错误的时候，将会从输出2里面输出msg.payload = {} ,如果需要请做相关业务处理</p>
+      <p>其余信息查看输出</p>
 
     <p>和iobroker开发这一起聊者，快来加入吧</p>
     <img src="https://i.loli.net/2018/12/28/5c25b8bf1e78d.jpg"/>
