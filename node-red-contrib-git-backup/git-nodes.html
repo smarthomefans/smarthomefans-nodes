@@ -1,0 +1,87 @@
+<script type='text/javascript'>
+  RED.nodes.registerType('git-nodes-backup', {
+      category: '备份',
+      color: '#888888',
+      defaults: {
+        label: { value: '' },
+        branch: { value: 'master' },
+        sourcebranch: { value: 'master' },
+        gitadd: { value: 'settings.js,package.json,.config.json,lib' },
+        gitrmcache: { value: '' },
+        debugging: { value: true},
+        git: { type: "git-config", required: false }
+      },
+      inputs: 1,
+      outputs: 1,
+      icon: 'icon.png',
+      label: function () {
+          return this.name || "NodeRed 备份";
+      }
+      
+    }
+);
+</script>
+<script type='text/x-red' data-template-name='git-nodes-backup'>
+  <div class='form-row'>
+    <label for='node-input-label' '><i class='fa fa-tag'></i> Name</label>
+    <input type='text' id='node-input-label' placeholder='' style='width:60%;'>
+  </div>
+  <div class="form-row">
+    <label for="node-input-branch" style='width:100px;'><i class="fa fa-pagelines"></i> 本地分支</label>
+    <input type="text" id="node-input-branch" placeholder='master' style='width:60%;'>
+  </div>
+  <div class="form-row">
+    <label for="node-input-sourcebranch" style='width:100px;'><i class="fa fa-pagelines"></i> 远程分支</label>
+    <input type="text" id="node-input-sourcebranch" placeholder='master' style='width:60%;'>
+    <div style="padding-left:100px;" style='width:60%;'>这个和上面的分支一般不用修改</div>
+  </div>
+  <div class="form-row">
+    <label for="node-input-gitadd" style='width:100px;'><i class="fa fa-plus-circle"></i> git add</label>
+    <input type="text" id="node-input-gitadd" placeholder='settings.js,package.json' style='width:60%;'>
+    <div style="padding-left:100px;" style='width:60%;'>备份文件，一般不用修改，如果发现配置不在</div>
+    <div style="padding-left:100px;" style='width:60%;'>直接把文件名按照格式填写即可</div>
+    
+  </div>
+  <div class="form-row">
+    <label for="node-input-gitrmcache" style='width:100px;'><i class="fa fa-minus-circle"></i> git rm</label>
+    <input type="text" id="node-input-gitrmcache" placeholder='一般不用填写，node/xx' style='width:60%;'>
+  </div>
+  <div class="form-row">
+    <label style='width:100px;'><i class="fa fa-sign-in"></i> 输出调试日志</label>
+    <input type="checkbox" id="node-input-debugging" style="display: inline-block; width: auto; vertical-align: top;">
+    <label for="node-input-debugging" style="width: 60%;"> &nbsp;</label>
+  </div>
+  <hr />
+  <div class="form-row">
+    <label for="node-input-git" style='width:100px;'><i class="fa fa-code-fork"></i> git repository</label>
+    <input type="text" id="node-input-git" style='width:60%;'>
+  </div>
+</script>
+<script type='text/x-red' data-help-name='git-nodes-backup'>
+  <dl>
+    <dt>Press button</dt>
+    <dd>
+      git init<br />
+      git remote add origin<br />
+      git config --local user.name<br />
+      git config --local user.email<br />
+      git add flows.json<br />
+      git add xxx<br />
+      git rm --cached xxx<br />
+      git status<br />
+      git commit -m "xxx"<br />
+      git push -u origin master
+    </dd>
+  </dl>
+  <hr />
+  <dl>
+      <dt>git add</dt>
+      <dd>Input file name by Comma Separated Value.</dd>
+      <dt>git rm</dt>
+      <dd>Input file name by Comma Separated Value.</dd>
+      <dt>Turns on debugging</dt>
+      <dd>Show results on debug tab.</dd>
+      <dt>git repository (ssh)</dt>
+      <dd>ex: git@github.com:high-u/node-red-git-test.git</dd>
+  </dl>
+</script>

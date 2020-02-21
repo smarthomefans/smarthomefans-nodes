@@ -1,0 +1,44 @@
+<script type="text/javascript">
+  RED.nodes.registerType('git-config',{
+      category: 'config',
+      defaults: {
+          name: {value:"默认git配置"},
+          git: {value: ""}
+      },
+      credentials: {
+          username: {type:"text"},
+          useremail: {type:"text"}
+      },
+      label: function() {
+          return this.name;
+      }
+  });
+</script>
+
+<script type="text/x-red" data-template-name="git-config">
+  <div class="form-row">
+    <label for="node-config-input-name" style="width:150px;"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-config-input-name" style='width:60%;'>
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-git" style="width:150px;"><i class="fa fa-code-fork"></i>项目地址</label>
+    <input type="text" id="node-config-input-git" style='width:60%;' placeholder="https://username:password@github.com/yaming116/node-red-backup.git">
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-username" style="width:150px;"><i class="fa fa-user-o"></i> 登陆名</label>
+    <input type="text" id="node-config-input-username" style='width:60%;'>
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-useremail" style="width:150px;"><i class="fa fa-envelope-o"></i> 邮箱</label>
+    <input type="text" id="node-config-input-useremail" style='width:60%;'>
+  </div>
+</script>
+
+<script type="text/x-red" data-help-name="git-config">
+  <p>Node-Red 配置备份节点，及时备份你的数据，减少迁移时的损失</p>
+  <p>分享节点的时候一定要注意,要修改一下这里的配置,不然就暴露了</p>
+
+  <p>和iobroker开发者一起聊天，快来加入吧</p>
+  <img src="https://i.loli.net/2018/12/28/5c25b8bf1e78d.jpg"/>
+
+</script>
