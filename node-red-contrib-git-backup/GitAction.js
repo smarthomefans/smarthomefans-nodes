@@ -119,11 +119,37 @@ class GitAction{
         }
 
         // git add flows
-        cmd = [
-          'cd ' + RED.settings.userDir,
-          'git add ' + 'flows_*.json flows_*_cred.json ',
-        ].join(';')
-        execSync(cmd)
+        try{
+          cmd = [
+            'cd ' + RED.settings.userDir,
+            'git add ' + 'flows_*.json ',
+          ].join(';')
+          execSync(cmd)
+        }catch(error){
+          RED.comms.publish("debug",{msg: error})
+        }
+
+        // git add flows
+        try{
+          cmd = [
+            'cd ' + RED.settings.userDir,
+            'git add ' + flowsFilePath,
+          ].join(';')
+          execSync(cmd)
+        }catch(error){
+          RED.comms.publish("debug",{msg: error})
+        }
+
+        // git add _cred
+        try{
+          cmd = [
+            'cd ' + RED.settings.userDir,
+            'git add ' + 'flows_*_cred.json  ',
+          ].join(';')
+          execSync(cmd)
+        }catch(error){
+          RED.comms.publish("debug",{msg: error})
+        }
 
         // git add
         if (node.gitadd) {
