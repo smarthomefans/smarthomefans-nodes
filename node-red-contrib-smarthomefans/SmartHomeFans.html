@@ -1,0 +1,132 @@
+<script type="text/javascript">
+RED.nodes.registerType('SmartHome-Bot-Account', {
+  category: 'config',
+  defaults: {
+    username: { type: 'text', required: true, value: '' },
+    password: { type: 'password', required: true, value: '' }
+  },
+  label: function () {
+    return this.username
+  }
+})
+</script>
+
+<script type="text/x-red" data-template-name="SmartHome-Bot-Account">
+    <div class="form-row">
+        <label for="node-config-input-username"><i class="fa fa-tag"></i> Username</label>
+        <input type="text" id="node-config-input-username" placeholder="Username">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-password"><i class="fa fa-location-arrow"></i> Password</label>
+        <input type="password" id="node-config-input-password" placeholder="Password">
+    </div>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('SmartHome-Bot-Config', {
+        category: 'config',
+        defaults: {
+            name: { type: 'text', required: true, value: '' },
+            jsonConfig: { type: 'text', required: true, value: '' }
+        },
+        label: function () {
+            return this.name
+        }
+    })
+</script>
+
+<script type="text/x-red" data-template-name="SmartHome-Bot-Config">
+        <div class="form-row">
+            <label for="node-config-input-name"><i class="fa fa-tag"></i> 名字</label>
+            <input type="text" id="node-config-input-name" placeholder="设备类型配置信息"">
+        </div>
+        <div class="form-row">
+            <label for="node-config-input-jsonConfig"><i class="icon-tag"></i>配置</label>
+            <textarea type="text" id="node-config-input-jsonConfig" placeholder="指定设备类型的配置信息" style="width: 70%; height:200px;"></textarea>
+          </div>
+    </script>
+
+    <script type="text/x-red" data-help-name="SmartHome-Bot-Config">
+        <p></p>
+    </script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('SmartHome-Bot', {
+        category: 'SmartHomeFans-Xiaoai',
+        color: '#FFFF00',
+        defaults: {
+            name: { value: "" },
+            account: { type: "SmartHome-Bot-Account", required: true },
+            jsonConfig: { type: "SmartHome-Bot-Config", required: true },
+            deviceId: { value: "", required: true, value: "" }
+        },
+        inputs: 0,
+        outputs: 2,
+        icon: "SmartHome-Bot.png",
+        paletteLabel: function () {
+            return "输入";
+        },
+        label: function () {
+            return this.name || this.deviceId || '默认设备';
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="SmartHome-Bot">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-account"><i class="fa fa-tag"></i> Account</label>
+        <input type="text" id="node-input-account" placeholder="Account">
+    </div>
+    <div class="form-row">
+        <label for="node-input-jsonConfig"><i class="fa fa-tag"></i> 配置</label>
+        <input type="text" id="node-input-jsonConfig" placeholder="指定设备类型配置信息">
+    </div>
+    <div class="form-row">
+        <label for="node-input-deviceId"><i class="fa fa-cog"></i> DeviceId</label>
+        <input type="text" id="node-input-deviceId">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="SmartHome-Bot">
+    <p></p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('SmartHome-Bot-End', {
+        category: 'SmartHomeFans-Xiaoai',
+        color: '#FFFF00',
+        defaults: {
+            name: { value: "" },
+            account: { type: "SmartHome-Bot-Account", required: true }
+        },
+        inputs: 1,
+        outputs: 0,
+        icon: "SmartHome-Bot.png",
+        paletteLabel: function () {
+            return "输出"
+        },
+        label: function () {
+            return this.name || this.deviceId || '默认输出';;
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="SmartHome-Bot-End">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-account"><i class="fa fa-tag"></i> Account</label>
+        <input type="text" id="node-input-account" placeholder="Account">
+    </div>
+
+</script>
+
+<script type="text/x-red" data-help-name="SmartHome-Bot-End">
+    <p></p>
+</script>
