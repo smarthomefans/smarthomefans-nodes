@@ -201,6 +201,7 @@ module.exports = function (RED) {
             const key = configPropertie[`${siid}`][`${piid}`]
             if (msg.hasOwnProperty(key)) {
               p.value = msg[key]
+              p.status = 0
             } else if (intent === 'get-properties' && !p.hasOwnProperty('status')) {
               console.log(`${key} 没有找到`)
               p.status = -1
