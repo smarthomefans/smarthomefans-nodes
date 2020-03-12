@@ -154,7 +154,7 @@ module.exports = function (RED) {
           } else if (intent === 'set-properties') {
             payload = {}
           }
-          console.log(this.jsonConfig)
+
           const configPropertie = this.jsonConfig.jsonConfig
           sendData['configPropertie'] = configPropertie
           const properties = messageData['data']
@@ -196,16 +196,21 @@ module.exports = function (RED) {
           const { data, intent, deviceId, configPropertie } = msg
           data.map(p => {
             const { piid, siid } = p
-            p.status = 0
+            if (!p.hasOwnProperty('status')) {
+              p.status = 0
+            }
             const key = configPropertie[`${siid}`][`${piid}`]
-            if (msg[key]) {
+            if (msg.hasOwnProperty(key)) {
               p.value = msg[key]
-            } else if (intent === 'get-properties') {
+            } else if (intent === 'get-properties' && !p.hasOwnProperty('status')) {
+              console.log(`${key} 没有找到`)
               p.status = -1
               p.description = '控制失败，请检查流程'
             }
             return p
           })
+
+          console.log(data)
 
           if (node.account.connected) {
             node.account.mqttClient.publish(
