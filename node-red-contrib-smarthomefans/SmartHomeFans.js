@@ -4,7 +4,6 @@ module.exports = function (RED) {
   class SmartHomeBotConfig {
     constructor (config) {
       RED.nodes.createNode(this, config)
-      console.log(config)
 
       this.name = config.name
       this.jsonConfig = JSON.parse(config.jsonConfig)
@@ -196,7 +195,7 @@ module.exports = function (RED) {
           const { data, intent, deviceId, configPropertie } = msg
           data.map(p => {
             const { piid, siid } = p
-            if (!p.hasOwnProperty('status')) {
+            if (intent !== 'get-properties' && !p.hasOwnProperty('status')) {
               p.status = 0
             }
             const key = configPropertie[`${siid}`][`${piid}`]
