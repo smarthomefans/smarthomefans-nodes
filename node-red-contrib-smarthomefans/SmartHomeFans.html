@@ -58,7 +58,8 @@ RED.nodes.registerType('SmartHome-Bot-Account', {
             name: { value: "" },
             account: { type: "SmartHome-Bot-Account", required: true },
             jsonConfig: { type: "SmartHome-Bot-Config", required: true },
-            deviceId: { value: "", required: true, value: "" }
+            deviceId: { value: "", required: true},
+            auto:{ value: false}
         },
         inputs: 0,
         outputs: 2,
@@ -89,6 +90,10 @@ RED.nodes.registerType('SmartHome-Bot-Account', {
         <label for="node-input-deviceId"><i class="fa fa-cog"></i> DeviceId</label>
         <input type="text" id="node-input-deviceId">
     </div>
+    <div class="form-row">
+        <label style='width:100px;'><i class="fa fa-sign-in"></i> 控制自动反馈</label>
+        <input type="checkbox" id="node-input-auto" style="display: inline-block; width: auto; vertical-align: top;">
+      </div>
 </script>
 
 <script type="text/x-red" data-help-name="SmartHome-Bot">

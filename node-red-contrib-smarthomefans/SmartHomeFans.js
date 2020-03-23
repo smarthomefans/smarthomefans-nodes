@@ -127,13 +127,13 @@ module.exports = function (RED) {
 
       this.config = config
       this.deviceId = this.config.deviceId
+      this.auto = this.config.auto
       this.account = RED.nodes.getNode(this.config.account)
       this.jsonConfig = RED.nodes.getNode(this.config.jsonConfig)
       this.account.addDevice(this.deviceId, this)
 
       node.on('close', function (removed, done) {
         node.account.removeDevice(this.deviceId)
-
         done()
       })
 
@@ -159,6 +159,10 @@ module.exports = function (RED) {
           const properties = messageData['data']
           properties.forEach(element => {
             const { piid, siid } = element
+            if (siid === 1) {
+              // 过滤设备属性信息
+              return
+            }
             const key = configPropertie[`${siid}`][`${piid}`]
 
             if (intent === 'get-properties') {
@@ -172,11 +176,27 @@ module.exports = function (RED) {
             node.send([sendData, null])
           } else if (intent === 'set-properties') {
             node.send([null, sendData])
+            if (node.auto) {
+              autoCallBack(sendData)
+            }
           }
         } catch (err) {
           console.log(err)
           this.status({ fill: 'red', shape: 'ring', text: '消息处理失败' })
           RED.comms.publish('debug', { msg: err })
+        }
+      }
+
+      function autoCallBack (sendData) {
+        const { data, deviceId } = sendData
+        data.map(p => {
+          p.status = 0
+          return p
+        })
+        if (node.account.connected) {
+          node.account.mqttClient.publish(
+            'smarthomefans/' + node.account.config.username + '/' + deviceId + '/set',
+            JSON.stringify(data))
         }
       }
     }
@@ -195,6 +215,11 @@ module.exports = function (RED) {
           const { data, intent, deviceId, configPropertie } = msg
           data.map(p => {
             const { piid, siid } = p
+
+            if (siid === 1) {
+              deviceInformation(p)
+            }
+
             if (intent !== 'get-properties' && !p.hasOwnProperty('status')) {
               p.status = 0
             }
@@ -210,8 +235,6 @@ module.exports = function (RED) {
             return p
           })
 
-          console.log(data)
-
           if (node.account.connected) {
             node.account.mqttClient.publish(
               'smarthomefans/' + node.account.config.username + '/' + deviceId + '/set',
@@ -221,6 +244,27 @@ module.exports = function (RED) {
           console.error(e)
         }
       })
+
+      function deviceInformation (item) {
+        item.status = 0
+        switch (item.piid) {
+          case 1:
+            item.value = 'smart-home-fans'
+            break
+          case 2:
+            item.value = 'smartHome'
+            break
+          case 3:
+            item.value = '1-1-1'
+            break
+          case 4:
+            item.value = '1.0.0'
+            break
+          default:
+            break
+        }
+        return item
+      }
     }
   }
   RED.nodes.registerType('SmartHome-Bot-End', SmartHomeBotEnd)
