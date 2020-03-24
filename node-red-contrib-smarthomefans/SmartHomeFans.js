@@ -18,6 +18,12 @@ module.exports = function (RED) {
       this.config = config
       this.devices = {}
       this.connected = false
+      this.name = config.name
+      if (this.credentials) {
+        this.username = this.credentials.username
+        this.password = this.credentials.password
+      }
+      this.times = 0
 
       node.on('close', function (removed, done) {
         try {
@@ -25,11 +31,17 @@ module.exports = function (RED) {
           this.connected = false
         } catch (e) {
         };
-
+        node.times = 0
         done()
       })
-
-      this.connect()
+      if (this.username && this.password && this.username.length > 4 && this.password.length > 4) {
+        this.connect()
+        for (const device in node.devices) {
+          node.devices[device].status({ fill: 'green', shape: 'dot', text: '连接中。。。' })
+        }
+      } else {
+        node.error('用户名或密码错误')
+      }
     }
 
     connect () {
@@ -38,8 +50,9 @@ module.exports = function (RED) {
       try {
         var mqttOptions = {
           clientId: this.config.username + '_' + Math.random().toString(16).substr(2, 8),
-          username: this.config.username,
-          password: this.config.password,
+          username: this.username,
+          password: this.password,
+          reconnectPeriod: 1000 * 60,
           clean: true
         }
         this.mqttClient = mqtt.connect('tcp://mqtt.nodered.top:50001', mqttOptions)
@@ -118,7 +131,10 @@ module.exports = function (RED) {
       return this.devices[deviceId]
     }
   };
-  RED.nodes.registerType('SmartHome-Bot-Account', SmartHomeBotAccount)
+  RED.nodes.registerType('SmartHome-Bot-Account', SmartHomeBotAccount, { credentials: {
+    username: { type: 'text' },
+    password: { type: 'password' }
+  }})
 
   class SmartHomeBot {
     constructor (config) {

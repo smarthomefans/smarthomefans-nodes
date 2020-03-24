@@ -2,16 +2,23 @@
 RED.nodes.registerType('SmartHome-Bot-Account', {
   category: 'config',
   defaults: {
+    name: { value: '默认配置' }
+  },
+  credentials: {
     username: { type: 'text', required: true, value: '' },
     password: { type: 'password', required: true, value: '' }
   },
   label: function () {
-    return this.username
+    return this.name
   }
 })
 </script>
 
 <script type="text/x-red" data-template-name="SmartHome-Bot-Account">
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-tag"></i>配置名称</label>
+        <input type="text" id="node-config-input-name">
+    </div>
     <div class="form-row">
         <label for="node-config-input-username"><i class="fa fa-tag"></i> Username</label>
         <input type="text" id="node-config-input-username" placeholder="Username">
