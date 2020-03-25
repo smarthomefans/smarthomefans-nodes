@@ -38,6 +38,7 @@ module.exports = function (RED) {
         this.connect()
       } else {
         node.error('用户名或密码错误')
+        node.status({ fill: 'green', shape: 'dot', text: '用户名或密码错误' })
       }
     }
 
@@ -46,7 +47,7 @@ module.exports = function (RED) {
 
       try {
         var mqttOptions = {
-          clientId: this.config.username + '_' + Math.random().toString(16).substr(2, 8),
+          clientId: this.username + '_' + Math.random().toString(16).substr(2, 8),
           username: this.username,
           password: this.password,
           reconnectPeriod: 1000 * 60,
@@ -57,7 +58,7 @@ module.exports = function (RED) {
           node.connected = true
           for (var device in node.devices) {
             if (node.devices.hasOwnProperty(device)) {
-              var topic = 'smarthomefans/' + node.config.username + '/' + device + '/get'
+              var topic = 'smarthomefans/' + node.username + '/' + device + '/get'
               node.mqttClient.subscribe(topic, { qos: 2 })
               node.devices[device].status({ fill: 'green', shape: 'dot', text: 'node-red:common.status.connected' })
             }
@@ -208,7 +209,7 @@ module.exports = function (RED) {
         })
         if (node.account.connected) {
           node.account.mqttClient.publish(
-            'smarthomefans/' + node.account.config.username + '/' + deviceId + '/set',
+            'smarthomefans/' + node.account.credentials.username + '/' + deviceId + '/set',
             JSON.stringify(data))
         }
       }
@@ -250,7 +251,7 @@ module.exports = function (RED) {
 
           if (node.account.connected) {
             node.account.mqttClient.publish(
-              'smarthomefans/' + node.account.config.username + '/' + deviceId + '/set',
+              'smarthomefans/' + node.account.credentials.username + '/' + deviceId + '/set',
               JSON.stringify(data))
           }
         } catch (e) {
