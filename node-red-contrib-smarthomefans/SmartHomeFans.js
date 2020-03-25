@@ -34,11 +34,8 @@ module.exports = function (RED) {
         node.times = 0
         done()
       })
-      if (this.username && this.password && this.username.length > 4 && this.password.length > 4) {
+      if (this.username && this.password && this.username.length > 1 && this.password.length > 4) {
         this.connect()
-        for (const device in node.devices) {
-          node.devices[device].status({ fill: 'green', shape: 'dot', text: '连接中。。。' })
-        }
       } else {
         node.error('用户名或密码错误')
       }
