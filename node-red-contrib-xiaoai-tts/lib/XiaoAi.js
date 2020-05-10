@@ -71,6 +71,22 @@ class XiaoAi {
     })
   }
 
+  setVolume (v, deviceId) {
+    console.log('volume:'+v)
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!this.client) {
+          await this.getSession()
+        }
+
+        const data = await this.client.setVolume(v, deviceId)
+        resolve(data)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
   deviceList () {
     return new Promise(async (resolve, reject) => {
       try {

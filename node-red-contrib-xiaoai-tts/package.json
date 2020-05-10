@@ -1,8 +1,65 @@
 {
-  "name": "node-red-contrib-xiaoai-tts",
-  "version": "1.0.2",
+  "_from": "node-red-contrib-xiaoai-tts@1.0.3",
+  "_id": "node-red-contrib-xiaoai-tts@1.0.3",
+  "_inBundle": false,
+  "_integrity": "sha512-71bnlBzyBPRZz9Ri2CspuE95ffYE8rrNDV1lyG7KyjHYTfjxG62u4CI4+GCluUX+hp5x5vtqUX35V6EYQtCBHQ==",
+  "_location": "/node-red-contrib-xiaoai-tts",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "node-red-contrib-xiaoai-tts@1.0.3",
+    "name": "node-red-contrib-xiaoai-tts",
+    "escapedName": "node-red-contrib-xiaoai-tts",
+    "rawSpec": "1.0.3",
+    "saveSpec": null,
+    "fetchSpec": "1.0.3"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/node-red-contrib-xiaoai-tts/-/node-red-contrib-xiaoai-tts-1.0.2.tgz",
+  "_shasum": "28d05537b3ba1a7fc0584fffcda991c7eeb8cf77",
+  "_spec": "node-red-contrib-xiaoai-tts@1.0.3",
+  "_where": "/data",
+  "author": {
+    "name": "yaming116,fineemb"
+  },
+  "bugs": {
+    "url": "https://github.com/smarthomefans/smarthomefans-nodes/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "mkdirp": "^0.5.1",
+    "node-fetch": "^2.4.0"
+  },
+  "deprecated": false,
   "description": "小爱tts",
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.16.0",
+    "eslint-config-vue": "^2.0.2",
+    "eslint-plugin-vue": "^5.2.2",
+    "eslint-utils": "^1.4.2"
+  },
+  "homepage": "https://github.com/smarthomefans/smarthomefans-nodes#readme",
+  "keywords": [
+    "node-red"
+  ],
+  "license": "MIT",
   "main": "index.js",
+  "name": "node-red-contrib-xiaoai-tts",
+  "node-red": {
+    "nodes": {
+      "xiaoai-tts": "xiaoai-tts.js",
+      "xiaoai-volume": "xiaoai-volume.js",
+      "xiaoai-mibrain": "xiaoai-mibrain.js",
+      "xiaoai-mediaplayer": "xiaoai-mediaplayer.js",
+      "xiaoai-mibt": "xiaoai-mibt.js",
+      "xiaoai-tts-configurator": "xiaoai-tts-configurator.js"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/smarthomefans/smarthomefans-nodes.git"
@@ -10,31 +67,5 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "node-red"
-  ],
-  "node-red": {
-    "nodes": {
-      "xiaoai-tts": "xiaoai-tts.js",
-      "xiaoai-mibrain": "xiaoai-mibrain.js",
-      "xiaoai-mediaplayer": "xiaoai-mediaplayer.js",
-      "xiaoai-tts-configurator": "xiaoai-tts-configurator.js"
-    }
-  },
-  "bugs": {
-    "url": "https://github.com/smarthomefans/smarthomefans-nodes/issues"
-  },
-  "author": "yaming116",
-  "license": "MIT",
-  "dependencies": {
-    "mkdirp": "^0.5.1",
-    "node-fetch": "^2.4.0"
-  },
-  "devDependencies": {
-    "babel-eslint": "^10.0.1",
-    "eslint": "^5.16.0",
-    "eslint-config-vue": "^2.0.2",
-    "eslint-plugin-vue": "^5.2.2",
-    "eslint-utils": "^1.4.2"
-  }
+  "version": "1.0.3"
 }

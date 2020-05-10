@@ -1,6 +1,7 @@
 const login = require('./login')
 const device = require('./device')
 const tts = require('./tts')
+const setVolume = require('./volume')
 const { play, pause, play_status, prev, next, toggle } = require('./mediaplayer')
 const { nlpResult, aiService } = require('./mibrain')
 const { wakeupTV, wakeupStop } = require('./tv')
@@ -56,6 +57,22 @@ class XiaoAi {
         deviceId: this.liveDevice[0].deviceID
       })
     }
+  }
+
+  async setVolume (v, deviceId) {
+    // console.log('volume:'+v)
+    const ss = await this.session
+    const status = await this.checkStatus(deviceId)
+    if (!status) {
+      return Promise.resolve('无设备在线')
+    }
+
+    deviceId = this.valDeviceId(deviceId)
+
+    return setVolume(v, {
+      cookie: ss.cookie,
+      deviceId: deviceId
+    })
   }
 
   async checkStatus (deviceId) {
