@@ -56,7 +56,6 @@
       "xiaoai-volume": "xiaoai-volume.js",
       "xiaoai-mibrain": "xiaoai-mibrain.js",
       "xiaoai-mediaplayer": "xiaoai-mediaplayer.js",
-      "xiaoai-mibt": "xiaoai-mibt.js",
       "xiaoai-tts-configurator": "xiaoai-tts-configurator.js"
     }
   },
