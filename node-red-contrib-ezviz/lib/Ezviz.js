@@ -4,8 +4,8 @@ const moment = require('moment')
 const array = require('lodash/array')
 const EzvizCode = require('./EzvizCode')
 
-// 有效期7天，提前10s更新
-const EXPIRE_TIME = 1000 * 3600 * 24 * 7 - (10 * 1000)
+// 有效期7天，提前8小时更新
+const EXPIRE_TIME =  (1000 * 3600 * 8 )
 // 打开方式
 const openType = { 0: '指纹', 1: '密码', 2: '卡' }
 
@@ -21,7 +21,7 @@ class EzvizClass {
     return new Promise(async (resolve, reject) => {
       try {
         const cache = getCache(cache_key)
-        if (cache && cache.time && ((new Date().valueOf() - cache.time) < EXPIRE_TIME)) {
+        if (cache && cache.time && ((cache.time - new Date().valueOf() ) < EXPIRE_TIME)) {
           // console.log('has cache', cache)
           resolve(cache.token)
           return
