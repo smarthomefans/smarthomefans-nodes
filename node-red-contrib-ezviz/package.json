@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-ezviz",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "萤石节点系列,目前支持指纹锁开门记录、摄像头抓拍,云台控制",
   "main": "index.js",
   "repository": {
