@@ -72,7 +72,7 @@ RED.nodes.registerType('SmartHome-Bot-Account', {
         outputs: 2,
         icon: "SmartHome-Bot.png",
         paletteLabel: function () {
-            return "输入";
+            return "小爱-输入";
         },
         label: function () {
             return this.name || this.deviceId || '默认设备';
@@ -119,7 +119,7 @@ RED.nodes.registerType('SmartHome-Bot-Account', {
         outputs: 0,
         icon: "SmartHome-Bot.png",
         paletteLabel: function () {
-            return "输出"
+            return "小爱-输出"
         },
         label: function () {
             return this.name || this.deviceId || '默认输出';;
@@ -140,5 +140,86 @@ RED.nodes.registerType('SmartHome-Bot-Account', {
 </script>
 
 <script type="text/x-red" data-help-name="SmartHome-Bot-End">
+    <p></p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('SmartHome-Tmall-Bot', {
+        category: 'SmartHomeFans-Tmall',
+        color: '#FFFF00',
+        defaults: {
+            name: { value: "" },
+            account: { type: "SmartHome-Bot-Account", required: true },
+            deviceId: { value: "", required: true},
+            auto:{ value: false}
+        },
+        inputs: 0,
+        outputs: 2,
+        icon: "SmartHome-Bot.png",
+        paletteLabel: function () {
+            return "天猫-输入";
+        },
+        label: function () {
+            return this.name || this.deviceId || '默认设备';
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="SmartHome-Tmall-Bot">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-account"><i class="fa fa-tag"></i> Account</label>
+        <input type="text" id="node-input-account" placeholder="Account">
+    </div>
+    <div class="form-row">
+        <label for="node-input-deviceId"><i class="fa fa-cog"></i> DeviceId</label>
+        <input type="text" id="node-input-deviceId">
+    </div>
+    <div class="form-row">
+        <label style='width:100px;'><i class="fa fa-sign-in"></i> 控制自动反馈</label>
+        <input type="checkbox" id="node-input-auto" style="display: inline-block; width: auto; vertical-align: top;">
+      </div>
+</script>
+
+<script type="text/x-red" data-help-name="SmartHome-Tmall-Bot">
+    <p></p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('SmartHome-Tmall-Bot-End', {
+        category: 'SmartHomeFans-Tmall',
+        color: '#FFFF00',
+        defaults: {
+            name: { value: "" },
+            account: { type: "SmartHome-Bot-Account", required: true }
+        },
+        inputs: 1,
+        outputs: 0,
+        icon: "SmartHome-Bot.png",
+        paletteLabel: function () {
+            return "天猫-输出"
+        },
+        label: function () {
+            return this.name || this.deviceId || '默认输出';;
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="SmartHome-Tmall-Bot-End">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-account"><i class="fa fa-tag"></i> Account</label>
+        <input type="text" id="node-input-account" placeholder="Account">
+    </div>
+
+</script>
+
+<script type="text/x-red" data-help-name="SmartHome-Tmall-Bot-End">
     <p></p>
 </script>

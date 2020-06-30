@@ -17,7 +17,9 @@ module.exports = function (RED) {
 
       this.config = config
       this.devices = {}
+      this.tmallDevices = {}
       this.connected = false
+      this.init_complite = false
       this.name = config.name
       if (this.credentials) {
         this.username = this.credentials.username
@@ -58,15 +60,15 @@ module.exports = function (RED) {
           node.connected = true
           for (var device in node.devices) {
             if (node.devices.hasOwnProperty(device)) {
-              var topic = 'smarthomefans/' + node.username + '/' + device + '/get'
-              node.mqttClient.subscribe(topic, { qos: 2 })
-              node.devices[device].status({ fill: 'green', shape: 'dot', text: 'node-red:common.status.connected' })
+              node.subscribe(device)
             }
           }
+          node.init_complite = true
         })
         this.mqttClient.on('reconnect', () => {
           if (node.connected) {
             node.connected = false
+            node.init_complite = false
             for (var device in node.devices) {
               if (node.devices.hasOwnProperty(device)) {
                 node.devices[device].status({ fill: 'yellow', shape: 'ring', text: 'node-red:common.status.connecting' })
@@ -77,6 +79,7 @@ module.exports = function (RED) {
         this.mqttClient.on('close', () => {
           if (node.connected) {
             node.connected = false
+            node.init_complite = false
             for (var device in node.devices) {
               if (node.devices.hasOwnProperty(device)) {
                 node.devices[device].status({ fill: 'red', shape: 'ring', text: 'node-red:common.status.disconnected' })
@@ -86,6 +89,7 @@ module.exports = function (RED) {
         })
         this.mqttClient.on('error', () => {
           node.connected = false
+          node.init_complite = false
           for (var device in node.devices) {
             if (node.devices.hasOwnProperty(device)) {
               node.devices[device].status({ fill: 'red', shape: 'ring', text: 'node-red:common.status.disconnected' })
@@ -103,7 +107,7 @@ module.exports = function (RED) {
               return
             }
 
-            var device = node.devices[infoArr[2]]
+            var device = node.devices[infoArr[2]] || node.tmallDevices[infoArr[2]]
             if (device === null || undefined === device) {
               return
             }
@@ -117,16 +121,49 @@ module.exports = function (RED) {
       };
     }
 
-    addDevice (deviceId, device) {
-      this.devices[deviceId] = device
+    subscribe (deviceId) {
+      var topic = 'smarthomefans/' + this.username + '/' + deviceId + '/get'
+      this.mqttClient.subscribe(topic, { qos: 2 })
     }
 
-    removeDevice (deviceId) {
+    unsubscribe (deviceId) {
+      var topic = 'smarthomefans/' + this.username + '/' + deviceId + '/get'
+      this.mqttClient.unsubscribe(topic, { qos: 2 })
+    }
+
+    addDevice (deviceId, device, type) {
+      if (type === 'xiaoai') {
+        this.devices[deviceId] = device
+      } else if (type === 'tmall') {
+        this.tmallDevices[deviceId] = device
+      }
+
+      if (this.init_complite) {
+        this.subscribe(deviceId)
+        device.status({ fill: 'green', shape: 'dot', text: 'node-red:common.status.connected' })
+      }
+    }
+
+    removeDevice (deviceId, type) {
       delete this.devices[deviceId]
+      if (type === 'xiaoai') {
+        delete this.devices[deviceId]
+      } else if (type === 'tmall') {
+        delete this.tmallDevices[deviceId]
+      }
+      try {
+        this.unsubscribe(deviceId)
+      } catch (err) {
+        // ignore
+      }
     }
 
-    getDevice (deviceId) {
-      return this.devices[deviceId]
+    getDevice (deviceId, type) {
+      if (type === 'xiaoai') {
+        return this.devices[deviceId]
+      } else if (type === 'tmall') {
+        return this.tmallDevices[deviceId]
+      }
     }
   };
   RED.nodes.registerType('SmartHome-Bot-Account', SmartHomeBotAccount, { credentials: {
@@ -144,10 +181,10 @@ module.exports = function (RED) {
       this.auto = this.config.auto
       this.account = RED.nodes.getNode(this.config.account)
       this.jsonConfig = RED.nodes.getNode(this.config.jsonConfig)
-      this.account.addDevice(this.deviceId, this)
+      this.account.addDevice(this.deviceId, this, 'xiaoai')
 
       node.on('close', function (removed, done) {
-        node.account.removeDevice(this.deviceId)
+        node.account.removeDevice(this.deviceId, 'xiaoai')
         done()
       })
 
@@ -282,4 +319,83 @@ module.exports = function (RED) {
     }
   }
   RED.nodes.registerType('SmartHome-Bot-End', SmartHomeBotEnd)
+
+  class SmartHomeTmallBot {
+    constructor (config) {
+      RED.nodes.createNode(this, config)
+      var node = this
+
+      this.config = config
+      this.deviceId = this.config.deviceId
+      this.auto = this.config.auto
+      this.account = RED.nodes.getNode(this.config.account)
+      this.account.addDevice(this.deviceId, this, 'tmall')
+
+      node.on('close', function (removed, done) {
+        node.account.removeDevice(this.deviceId, 'tmall')
+        done()
+      })
+
+      // eslint-disable-next-line no-unused-vars
+      node.onReceive = function (msg) {
+        try {
+          const messageData = JSON.parse(msg.toString())
+          const sendData = {}
+          const intent = messageData['intent']
+          sendData['intent'] = messageData['intent']
+          sendData['name'] = messageData['name']
+          sendData['payload'] = {}
+          sendData['data'] = messageData['data']
+          sendData['deviceId'] = this.deviceId
+          if (intent === 'AliGenie.Iot.Device.Query') {
+            node.send([sendData, null])
+          } else if (intent === 'AliGenie.Iot.Device.Control') {
+            node.send([null, sendData])
+            if (node.auto) {
+              autoCallBack(sendData)
+            }
+          }
+        } catch (err) {
+          console.log(err)
+          this.status({ fill: 'red', shape: 'ring', text: '消息处理失败' })
+          RED.comms.publish('debug', { msg: err })
+        }
+      }
+
+      function autoCallBack (sendData) {
+        const { data, deviceId } = sendData
+        data.payload = { deviceId }
+        if (node.account.connected) {
+          node.account.mqttClient.publish(
+            'smarthomefans/' + node.account.credentials.username + '/' + deviceId + '/set',
+            JSON.stringify(data))
+        }
+      }
+    }
+  }
+  RED.nodes.registerType('SmartHome-Tmall-Bot', SmartHomeTmallBot)
+
+  class SmartHomeTmallBotEnd {
+    constructor (config) {
+      RED.nodes.createNode(this, config)
+      var node = this
+      this.config = config
+      this.account = RED.nodes.getNode(this.config.account)
+
+      node.on('input', function (msg) {
+        try {
+          const { data, deviceId } = msg
+
+          if (node.account.connected) {
+            node.account.mqttClient.publish(
+              'smarthomefans/' + node.account.credentials.username + '/' + deviceId + '/set',
+              JSON.stringify(data))
+          }
+        } catch (e) {
+          console.error(e)
+        }
+      })
+    }
+  }
+  RED.nodes.registerType('SmartHome-Tmall-Bot-End', SmartHomeTmallBotEnd)
 }
