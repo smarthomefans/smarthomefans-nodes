@@ -48,6 +48,7 @@ class MessageProcess {
         node.status({ text: '用户名密码错误或系统错误，请xiaomi网站登陆尝试', fill: 'red', shape: 'ring' })
         if (this.isCleanToken) {
           this.isCleanToken = false
+          return
         }
       } else {
         if (err.status && err.status == '401') {
@@ -64,6 +65,7 @@ class MessageProcess {
         } else {
           if (this.isCleanToken) {
             this.isCleanToken = false
+            return
           }
           node.status({ text: err.message, fill: 'red', shape: 'ring' })
         }
