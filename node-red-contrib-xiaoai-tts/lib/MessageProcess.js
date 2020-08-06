@@ -46,6 +46,10 @@ class MessageProcess {
     } catch (err) {
       if (err instanceof XiaoAiError) {
         node.status({ text: '用户名密码错误或系统错误，请xiaomi网站登陆尝试', fill: 'red', shape: 'ring' })
+        if (this.isCleanToken) {
+          this.isCleanToken = false
+          return
+        }
       } else {
         if (err.status && err.status == '401') {
           node.status({ text: '授权信息失效', fill: 'red', shape: 'ring' })
@@ -59,6 +63,10 @@ class MessageProcess {
             this.isCleanToken = false
           }
         } else {
+          if (this.isCleanToken) {
+            this.isCleanToken = false
+            return
+          }
           node.status({ text: err.message, fill: 'red', shape: 'ring' })
         }
       }
