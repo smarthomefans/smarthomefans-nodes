@@ -17,6 +17,8 @@
     "nodes": {
       "xiaoai-tts": "xiaoai-tts.js",
       "xiaoai-mibrain": "xiaoai-mibrain.js",
+      "xiaoai-volume": "xiaoai-volume.js",
+      "xiaoai-phone": "xiaoai-phone.js",
       "xiaoai-mediaplayer": "xiaoai-mediaplayer.js",
       "xiaoai-tts-configurator": "xiaoai-tts-configurator.js"
     }
