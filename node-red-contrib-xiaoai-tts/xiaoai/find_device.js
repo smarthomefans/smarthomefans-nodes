@@ -8,16 +8,21 @@ async function findDevice (cookie,deviceId) {
   const rep = await request({
     url: API.DEVICE_MI+'/'+deviceId+'/location',
     type: 'json',
+    method: 'post',
     data: {
-      ts: randomString(30)
+      auto: false,
+      channel: 'web',
+      imei: deviceId,
+      userId: cookie.userId,
+      serviceToken: cookie.serviceToken
     },
     headers: {
-      Cookie: cookie
+      Cookie: cookie.cookie
     }
   })
 
   if (rep.code == 0) {
-    return rep.data
+    return rep
   } else {
     return []
   }

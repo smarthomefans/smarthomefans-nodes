@@ -84,7 +84,7 @@ class XiaoAi {
 
   async findDevice (deviceId) {
     
-    return this.session.then(ss => find_device(ss.cookie,deviceId))
+    return this.session.then(ss => find_device(ss,deviceId))
   }
   async deviceStatus (deviceId) {
     
