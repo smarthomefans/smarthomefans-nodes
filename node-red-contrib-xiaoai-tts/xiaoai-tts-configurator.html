@@ -1,3 +1,4 @@
+
 <script type="text/javascript">
 RED.nodes.registerType('xiaoai-tts-configurator', {
   category: 'config',
@@ -7,13 +8,11 @@ RED.nodes.registerType('xiaoai-tts-configurator', {
   defaults: {
     name: {
       value: ''
-    },
-    username: {
-      value: ''
-    },
-    password: {
-      value: ''
     }
+  },
+  credentials: {
+    username: {type:"text",required:true},
+    password: {type: "password",required:true},
   }
 })
 </script>
@@ -28,7 +27,7 @@ RED.nodes.registerType('xiaoai-tts-configurator', {
     </div>
     <div class="form-row">
       <label for="node-config-input-password"><i></i>密码</label>
-      <input type="text" id="node-config-input-password" placeholder="小米账号密码">
+      <input type="password" id="node-config-input-password" placeholder="小米账号密码">
     </div>
     <div class="form-row">
       <label style="width: 100%;text-align: right;padding-right: 34px;box-sizing: border-box;" >

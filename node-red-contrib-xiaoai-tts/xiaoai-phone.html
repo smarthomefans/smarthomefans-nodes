@@ -1,0 +1,252 @@
+
+<script type="text/javascript">
+
+RED.nodes.registerType('xiaoai-phone-devices', {
+  category: '小米',
+  color: '#7ac6cb',
+  paletteLabel: '手机列表',
+  label () {
+    return this.name || '手机列表'
+  },
+  defaults: {
+    name: {
+      value: ''
+    },
+    xiaoai: {
+      value: '',
+      type: 'xiaoai-tts-configurator'
+    }
+
+  },
+  inputs: 1,
+  outputs: 2,
+  icon: 'phone.svg'
+})
+
+RED.nodes.registerType('xiaoai-find-devices', {
+  category: '小米',
+  color: '#7ac6cb',
+  paletteLabel: '查找手机',
+  label () {
+    return this.name || '查找手机'
+  },
+  defaults: {
+    name: {
+      value: ''
+    },
+    xiaoai: {
+      value: '',
+      type: 'xiaoai-tts-configurator'
+    },
+    device: {
+      value: ''
+    }
+  },
+  inputs: 1,
+  outputs: 2,
+  icon: 'phone-find.svg'
+})
+
+RED.nodes.registerType('xiaoai-device-status', {
+  category: '小米',
+  color: '#7ac6cb',
+  paletteLabel: '手机状态',
+  label () {
+    return this.name || '手机状态'
+  },
+  defaults: {
+    name: {
+      value: ''
+    },
+    xiaoai: {
+      value: '',
+      type: 'xiaoai-tts-configurator'
+    },
+    device: {
+      value: ''
+    }
+  },
+  inputs: 1,
+  outputs: 2,
+  icon: 'gps.svg'
+})
+
+RED.nodes.registerType('xiaoai-device-noise', {
+  category: '小米',
+  color: '#7ac6cb',
+  paletteLabel: '手机发声',
+  label () {
+    return this.name || '手机发声'
+  },
+  defaults: {
+    name: {
+      value: ''
+    },
+    xiaoai: {
+      value: '',
+      type: 'xiaoai-tts-configurator'
+    },
+    device: {
+      value: ''
+    }
+  },
+  inputs: 1,
+  outputs: 2,
+  icon: 'noise.svg'
+})
+
+RED.nodes.registerType('xiaoai-device-clipboard', {
+  category: '小米',
+  color: '#7ac6cb',
+  paletteLabel: '云剪贴板',
+  label () {
+    return this.name || '云剪贴板'
+  },
+  defaults: {
+    name: {
+      value: ''
+    },
+    xiaoai: {
+      value: '',
+      type: 'xiaoai-tts-configurator'
+    },
+    text: {
+      value: ''
+    }
+  },
+  inputs: 1,
+  outputs: 2,
+  icon: 'clipboard.svg'
+})
+
+
+</script>
+
+<script type="text/x-red" data-template-name="xiaoai-phone-devices">
+  <div class="form-row">
+    <label for="node-input-xiaoai"><i class="icon-tag"></i>配置</label>
+    <input type="text" id="node-input-xiaoai">
+  </div>
+  <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i>名称</label>
+    <input type="text" id="node-input-name">
+  </div>
+
+  <div class="form-row">
+    <label style="width: 100%;text-align: right;padding-right: 34px;box-sizing: border-box;" >
+      <a href="https://bbs.iobroker.cn" target="_blank">此节点由 (ioBroker中国|智能家居)提供</a>
+    </label>
+  </div>
+</script>
+<script type="text/x-red" data-help-name="xiaoai-phone-devices">
+
+<p>从小米云获取小米手机列表信息</p>
+
+</script>
+
+<script type="text/x-red" data-template-name="xiaoai-find-devices">
+  <div class="form-row">
+    <label for="node-input-xiaoai"><i class="icon-tag"></i>配置</label>
+    <input type="text" id="node-input-xiaoai">
+  </div>
+  <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i>名称</label>
+    <input type="text" id="node-input-name">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-device"><i class="icon-tag"></i>指定设备</label>
+    <input type="text" id="node-input-device" placeholder="指定设备imei">
+  </div>
+
+  <div class="form-row">
+    <label style="width: 100%;text-align: right;padding-right: 34px;box-sizing: border-box;" >
+      <a href="https://bbs.iobroker.cn" target="_blank">此节点由 (ioBroker中国|智能家居)提供</a>
+    </label>
+  </div>
+</script>
+<script type="text/x-red" data-help-name="xiaoai-find-devices">
+
+<p>重新定位指定imei的设备</p>
+
+</script>
+
+<script type="text/x-red" data-template-name="xiaoai-device-status">
+  <div class="form-row">
+    <label for="node-input-xiaoai"><i class="icon-tag"></i>配置</label>
+    <input type="text" id="node-input-xiaoai">
+  </div>
+  <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i>名称</label>
+    <input type="text" id="node-input-name">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-device"><i class="icon-tag"></i>指定设备</label>
+    <input type="text" id="node-input-device" placeholder="指定设备imei">
+  </div>
+
+  <div class="form-row">
+    <label style="width: 100%;text-align: right;padding-right: 34px;box-sizing: border-box;" >
+      <a href="https://bbs.iobroker.cn" target="_blank">此节点由 (ioBroker中国|智能家居)提供</a>
+    </label>
+  </div>
+</script>
+<script type="text/x-red" data-help-name="xiaoai-device-status">
+
+<p>获取指定设备状态</p>
+
+</script>
+
+<script type="text/x-red" data-template-name="xiaoai-device-noise">
+  <div class="form-row">
+    <label for="node-input-xiaoai"><i class="icon-tag"></i>配置</label>
+    <input type="text" id="node-input-xiaoai">
+  </div>
+  <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i>名称</label>
+    <input type="text" id="node-input-name">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-device"><i class="icon-tag"></i>指定设备</label>
+    <input type="text" id="node-input-device" placeholder="指定设备imei">
+  </div>
+
+  <div class="form-row">
+    <label style="width: 100%;text-align: right;padding-right: 34px;box-sizing: border-box;" >
+      <a href="https://bbs.iobroker.cn" target="_blank">此节点由 (ioBroker中国|智能家居)提供</a>
+    </label>
+  </div>
+</script>
+<script type="text/x-red" data-help-name="xiaoai-device-noise">
+
+<p>指定设备发声,设备将会以最大的音量发声
+  在整个过程中，音量键控制无效</p>
+
+</script>
+
+<script type="text/x-red" data-template-name="xiaoai-device-clipboard">
+  <div class="form-row">
+    <label for="node-input-xiaoai"><i class="icon-tag"></i>配置</label>
+    <input type="text" id="node-input-xiaoai">
+  </div>
+  <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i>消息</label>
+    <input type="text" id="node-input-text">
+  </div>
+  <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i>名称</label>
+    <input type="text" id="node-input-name">
+  </div>
+
+  <div class="form-row">
+    <label style="width: 100%;text-align: right;padding-right: 34px;box-sizing: border-box;" >
+      <a href="https://bbs.iobroker.cn" target="_blank">此节点由 (ioBroker中国|智能家居)提供</a>
+    </label>
+  </div>
+</script>
+<script type="text/x-red" data-help-name="xiaoai-device-clipboard">
+
+<p>发送文本到云剪贴板,手机可以直接黏贴</p>
+</script>

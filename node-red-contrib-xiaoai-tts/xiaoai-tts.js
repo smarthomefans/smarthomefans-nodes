@@ -1,3 +1,4 @@
+
 const Xiaoai = require('./lib/XiaoAi')
 const MessageProcess = require('./lib/MessageProcess')
 const XiaoAiError = require('./xiaoai/XiaoAiError')

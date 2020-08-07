@@ -3,31 +3,42 @@ const XiaoAiError = require('./XiaoAiError')
 const { SDK_VER, API, APP_DEVICE_ID } = require('./const')
 const { md5, sha1Base64, isObject } = require('./utils')
 
-const commonParam = {
-  sid: 'micoapi',
-  _json: true
-}
-
 function getAiCookie (userId, serviceToken) {
   return `userId=${userId};serviceToken=${serviceToken}`
 }
 
-async function getLoginSign () {
+async function getLoginSign (id) {
+  let sid = 'micoapi'
+  if(id === 'i.mi.com'){
+    sid = 'i.mi.com'
+  }
   const info = await request({
     url: API.SERVICE_LOGIN,
     type: 'xiaoai',
-    data: commonParam
+    data: {
+      sid: sid,
+      _json: true
+    }
   })
 
   return { _sign: info._sign, qs: info.qs }
 }
 
-async function serviceAuth (signData, user, pwd) {
+async function serviceAuth (signData, user, pwd, id) {
+  let url = `api.mina.mi.com`
+  let sid = 'micoapi'
+  if(id === 'i.mi.com'){
+    sid = 'i.mi.com'
+    url = 'i.mi.com'
+  }
+  
   const data = {
     user,
     hash: md5(pwd).toUpperCase(),
-    callback: 'https://api.mina.mi.com/sts',
-    ...commonParam,
+    callback: 'https://'+url+'/sts', 
+    serviceParam: {checkSafePhone:false},
+    sid: sid,
+    _json: true,
     ...signData
   }
   const AuthInfo = await request({
@@ -71,7 +82,7 @@ function genClientSign (nonce, secrity) {
   return hashStr
 }
 
-async function login (user, pwd) {
+async function login (user, pwd, sid) {
   if (isObject(user)) {
     const { userId, serviceToken } = user
     const cookie = getAiCookie(userId, serviceToken)
@@ -82,10 +93,8 @@ async function login (user, pwd) {
       serviceToken
     }
   }
-
-  const sign = await getLoginSign()
-  const authInfo = await serviceAuth(sign, user, pwd)
-
+  const sign = await getLoginSign(sid)
+  const authInfo = await serviceAuth(sign, user, pwd, sid)
   if (authInfo.code != 0) {
     throw new XiaoAiError(authInfo.code, JSON.stringify(authInfo))
   }

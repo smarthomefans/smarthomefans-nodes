@@ -6,9 +6,10 @@ const readAsync = util.promisify(fs.readFile)
 const mkdirp = require('mkdirp')
 
 class XiaoAi {
-  constructor (node, config) {
+  constructor (node, config, sid) {
     this.node = node
     this.config = config
+    this.sid = sid
   }
 
   // 登录
@@ -28,7 +29,7 @@ class XiaoAi {
         }
 
         if (!jsonData || !jsonData.serviceToken || !jsonData.userId) {
-          this.client = new XiaoAiApi(this.config.username, this.config.password)
+          this.client = new XiaoAiApi(this.config.credentials.username, this.config.credentials.password, this.sid)
           jsonData = await this.client.connect()
           fs.writeFileSync(path, JSON.stringify(jsonData))
         } else {
@@ -71,6 +72,21 @@ class XiaoAi {
     })
   }
 
+  setVolume (v, deviceId) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!this.client) {
+          await this.getSession()
+        }
+
+        const data = await this.client.setVolume(v, deviceId)
+        resolve(data)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
   deviceList () {
     return new Promise(async (resolve, reject) => {
       try {
@@ -79,6 +95,77 @@ class XiaoAi {
         }
 
         const data = await this.client.getDevice()
+        resolve(data)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
+  phoneDeviceList () {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!this.client) {
+          await this.getSession()
+        }
+
+        const data = await this.client.getPhoneDevice()
+        resolve(data)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+  findPhoneDevice(deviceId) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!this.client) {
+          await this.getSession()
+        }
+
+        const data = await this.client.findDevice(deviceId)
+        resolve(data)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+  deviceStatus(deviceId) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!this.client) {
+          await this.getSession()
+        }
+
+        const data = await this.client.deviceStatus(deviceId)
+        resolve(data)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+  deviceNoise(deviceId) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!this.client) {
+          await this.getSession()
+        }
+
+        const data = await this.client.deviceNoise(deviceId)
+        resolve(data)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+  clipboard(msg) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!this.client) {
+          await this.getSession()
+        }
+
+        const data = await this.client.clipboard(msg)
         resolve(data)
       } catch (error) {
         reject(error)

@@ -1,0 +1,78 @@
+
+
+<script type="text/javascript">
+
+RED.nodes.registerType('xiaoai-volume', {
+  category: '小米',
+  color: '#7ac6cb',
+  paletteLabel: '音量设置',
+  label () {
+    return this.name || '音量设置'
+  },
+  defaults: {
+    name: {
+      value: ''
+    },
+    xiaoai: {
+      value: '',
+      type: 'xiaoai-tts-configurator'
+    },
+    volume: {
+      value: 0
+    },
+    device: {
+      value: ''
+    }
+
+  },
+  inputs: 1,
+  outputs: 2,
+  icon: 'volume.svg'
+})
+
+</script>
+
+<script type="text/x-red" data-template-name="xiaoai-volume">
+      <div class="form-row">
+        <label for="node-input-xiaoai"><i class="icon-tag"></i>配置</label>
+        <input type="text" id="node-input-xiaoai">
+      </div>
+      <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i>名称</label>
+        <input type="text" id="node-input-name">
+      </div>
+      <div class="form-row">
+        <label for="node-input-volume"><i class="icon-tag"></i>音量</label>
+        <input type="range" min="0" max="100" step="1" id="node-input-volume" placeholder="音量">
+      </div>
+
+      <div class="form-row">
+        <label for="node-input-device"><i class="icon-tag"></i>默认设备</label>
+        <input type="text" id="node-input-device" placeholder="默认设备id">
+      </div>
+
+      <div class="form-row">
+        <label style="width: 100%;text-align: right;padding-right: 34px;box-sizing: border-box;" >
+          <a href="https://bbs.iobroker.cn" target="_blank">此节点由 (ioBroker中国|智能家居)提供</a>
+        </label>
+      </div>
+</script>
+<script type="text/x-red" data-help-name="xiaoai-volume">
+  <p>小爱音箱音量调节</p>
+  <p>滑块设置到最左端时才能使用节点输入音量值,否在将使用本节点设置的数值</p>
+  <h3>输入</h3>
+  <dl class="message-properties">
+      <dt>payload
+          <span class="property-type">number</span>
+      </dt>
+      <dd>音量</dd>
+      <dt>device
+        <span class="property-type">string</span>
+      </dt>
+      <dd>设备唯一标识,用户指定小爱音箱设备</dd>
+  </dl>
+  <h3>输出</h3>
+  <p>当发生错误的时候，将会从输出2里面输出msg.payload = {} ,如果需要请做相关业务处理</p>
+  <p>其余信息查看输出</p>
+
+</script>
