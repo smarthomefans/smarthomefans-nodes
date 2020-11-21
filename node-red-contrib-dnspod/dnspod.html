@@ -1,0 +1,75 @@
+<script type="text/javascript">
+    RED.nodes.registerType('dnspod',{
+        category: 'function',
+        color: '#a6bbcf',
+        defaults: {
+            server: {value:"", type:"dnspod-server"},
+            domain: {value:""}, 
+            myip: { value: false },
+        },
+        inputs:1,
+        outputs:1,
+        icon: " function.png",
+        label: function() {
+            return this.name||"dnspod";
+        },
+    });
+
+    RED.nodes.registerType('dnspod-server',{
+        category: 'config',
+        defaults: {
+            name : { value:"默认token",required:true},
+            'dnspod_id' : {value:"",required:true},
+            token : { value:"", required:true},
+        },
+        label: function() {
+            return this.name;
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="dnspod">
+    <div class="form-row">
+        <label for="node-input-server"><i class="icon-tag"></i> Server</label>
+        <input type="text" id="node-input-server" placeholder="Server">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-domain"><i class="icon-tag"></i>域名</label>
+        <input type="text" id="node-input-domain" maxlength='78' placeholder="(msg.domain)">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-myip"><i class="icon-tag"></i>MyIp</label>
+        <input id="node-input-myip" type='checkbox' />
+    </div>
+    
+
+</script>
+
+
+<script type="text/x-red" data-help-name="dnspod">
+    <p>配置token和域名</p>
+    <p>域名格式为: xxx.xx.com</p>
+    <p>默认使用ip.cn进行公网域名获取,如果感觉不好用可以选择使用myip.com</>
+</script>
+
+
+<script type="text/x-red" data-template-name="dnspod-server">
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="icon-bookmark"></i> 通道名称</label>
+        <input type="text" id="node-config-input-name">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-dnspod_id"><i class="icon-bookmark"></i>ID</label>
+        <input type="text" id="node-config-input-dnspod_id">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-token"><i class="icon-bookmark"></i> Toekn</label>
+        <input type="text" id="node-config-input-token">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="dnspod-server">
+    <p>配置dnspod api请求使用的id和token</p>
+</script>
