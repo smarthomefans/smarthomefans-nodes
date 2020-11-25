@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-memwatch",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "node red node for memwatch",
   "main": "test.js",
   "scripts": {
@@ -21,7 +21,7 @@
   "author": "yaming116",
   "license": "MIT",
   "dependencies": {
-    "@airbnb/node-memwatch": "^2.0.0",
+    "@yaming116/node-memwatch": "^2.0.0",
     "heapdump": "^0.3.15"
   },
   "devDependencies": {

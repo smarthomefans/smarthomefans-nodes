@@ -1,6 +1,6 @@
 module.exports = function(RED) {
     const settings = RED.settings;
-    const memwatch = require('@airbnb/node-memwatch');
+    const memwatch = require('@yaming116/node-memwatch');
     const heapdump = require('heapdump');
 
     let userDir = ''
