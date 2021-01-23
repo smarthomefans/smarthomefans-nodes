@@ -9,6 +9,10 @@ class XiaoAi {
   constructor (node, config, sid) {
     this.node = node
     this.config = config
+    if (this.config) {
+        this.config.username = this.config.credentials.username
+      }
+    console.log(this.config)
     this.sid = sid
   }
 

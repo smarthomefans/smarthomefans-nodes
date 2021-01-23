@@ -1,7 +1,7 @@
 const fetch = require('node-fetch')
 const querystring = require('querystring')
 const { appendParam, parseResponseText } = require('./utils')
-const { SDK_VER, APP_VER } = require('./const')
+const { SDK_VER, APP_VER ,APP_UA, MINA_UA} = require('./const')
 
 class HttpError extends Error {
   constructor (rep) {
@@ -36,7 +36,7 @@ function request ({
       {
         'Content-Type': contentType,
         Connection: 'keep-alive',
-        'User-Agent': `APP/com.xiaomi.mico APPV/${APP_VER} iosPassportSDK/${SDK_VER} iOS/12.3`,
+        'User-Agent': url.includes('mina.mi.com') ? MINA_UA : APP_UA,
         Accept: '*/*'
       },
       headers
