@@ -1,4 +1,9 @@
 const mqtt = require('mqtt')
+const axios = require('axios');
+const os = require('os')
+const fs = require('fs')
+const util = require('util')
+const readAsync = util.promisify(fs.readFile)
 
 module.exports = function (RED) {
   class SmartHomeBotConfig {
@@ -17,9 +22,7 @@ module.exports = function (RED) {
 
       this.config = config
       this.devices = {}
-      this.tmallDevices = {}
       this.connected = false
-      this.init_complite = false
       this.name = config.name
       if (this.credentials) {
         this.username = this.credentials.username
@@ -60,15 +63,15 @@ module.exports = function (RED) {
           node.connected = true
           for (var device in node.devices) {
             if (node.devices.hasOwnProperty(device)) {
-              node.subscribe(device)
+              var topic = 'smarthomefans/' + node.username + '/' + device + '/get'
+              node.mqttClient.subscribe(topic, { qos: 2 })
+              node.devices[device].status({ fill: 'green', shape: 'dot', text: 'node-red:common.status.connected' })
             }
           }
-          node.init_complite = true
         })
         this.mqttClient.on('reconnect', () => {
           if (node.connected) {
             node.connected = false
-            node.init_complite = false
             for (var device in node.devices) {
               if (node.devices.hasOwnProperty(device)) {
                 node.devices[device].status({ fill: 'yellow', shape: 'ring', text: 'node-red:common.status.connecting' })
@@ -79,7 +82,6 @@ module.exports = function (RED) {
         this.mqttClient.on('close', () => {
           if (node.connected) {
             node.connected = false
-            node.init_complite = false
             for (var device in node.devices) {
               if (node.devices.hasOwnProperty(device)) {
                 node.devices[device].status({ fill: 'red', shape: 'ring', text: 'node-red:common.status.disconnected' })
@@ -89,7 +91,6 @@ module.exports = function (RED) {
         })
         this.mqttClient.on('error', () => {
           node.connected = false
-          node.init_complite = false
           for (var device in node.devices) {
             if (node.devices.hasOwnProperty(device)) {
               node.devices[device].status({ fill: 'red', shape: 'ring', text: 'node-red:common.status.disconnected' })
@@ -99,6 +100,7 @@ module.exports = function (RED) {
         this.mqttClient.on('message', (topic, message) => {
           try {
             var infoArr = topic.split('/')
+            // console.log(message)
 
             if (infoArr.length != 4) {
               return
@@ -107,7 +109,7 @@ module.exports = function (RED) {
               return
             }
 
-            var device = node.devices[infoArr[2]] || node.tmallDevices[infoArr[2]]
+            var device = node.devices[infoArr[2]]
             if (device === null || undefined === device) {
               return
             }
@@ -121,49 +123,34 @@ module.exports = function (RED) {
       };
     }
 
-    subscribe (deviceId) {
-      var topic = 'smarthomefans/' + this.username + '/' + deviceId + '/get'
-      this.mqttClient.subscribe(topic, { qos: 2 })
-    }
-
-    unsubscribe (deviceId) {
-      var topic = 'smarthomefans/' + this.username + '/' + deviceId + '/get'
-      this.mqttClient.unsubscribe(topic, { qos: 2 })
-    }
-
-    addDevice (deviceId, device, type) {
-      if (type === 'xiaoai') {
-        this.devices[deviceId] = device
-      } else if (type === 'tmall') {
-        this.tmallDevices[deviceId] = device
-      }
-
-      if (this.init_complite) {
-        this.subscribe(deviceId)
-        device.status({ fill: 'green', shape: 'dot', text: 'node-red:common.status.connected' })
-      }
-    }
-
-    removeDevice (deviceId, type) {
-      delete this.devices[deviceId]
-      if (type === 'xiaoai') {
-        delete this.devices[deviceId]
-      } else if (type === 'tmall') {
-        delete this.tmallDevices[deviceId]
-      }
+    addDevice (deviceId, device) {
+      this.devices[deviceId] = device
       try {
-        this.unsubscribe(deviceId)
-      } catch (err) {
-        // ignore
+        if(this.mqttClient && this.connected) {
+          var topic = 'smarthomefans/' + this.username + '/' + deviceId + '/get'
+          // console.log(topic)
+          this.mqttClient.subscribe(topic, { qos: 2 })
+          this.devices[deviceId].status({ fill: 'green', shape: 'dot', text: 'node-red:common.status.connected' })
+        }
+      } catch (error) {
+        console.error(error)
       }
     }
 
-    getDevice (deviceId, type) {
-      if (type === 'xiaoai') {
-        return this.devices[deviceId]
-      } else if (type === 'tmall') {
-        return this.tmallDevices[deviceId]
+    removeDevice (deviceId) {
+      delete this.devices[deviceId]
+      try {
+        if(this.mqttClient && this.connected ) {
+          var topic = 'smarthomefans/' + this.username + '/' + deviceId + '/get'
+          this.mqttClient.unsubscribe(topic, { qos: 2 })
+        }
+      } catch (error) {
+        console.error(error)
       }
+    }
+
+    getDevice (deviceId) {
+      return this.devices[deviceId]
     }
   };
   RED.nodes.registerType('SmartHome-Bot-Account', SmartHomeBotAccount, { credentials: {
@@ -181,10 +168,10 @@ module.exports = function (RED) {
       this.auto = this.config.auto
       this.account = RED.nodes.getNode(this.config.account)
       this.jsonConfig = RED.nodes.getNode(this.config.jsonConfig)
-      this.account.addDevice(this.deviceId, this, 'xiaoai')
+      this.account.addDevice(this.deviceId, this)
 
       node.on('close', function (removed, done) {
-        node.account.removeDevice(this.deviceId, 'xiaoai')
+        node.account.removeDevice(this.deviceId)
         done()
       })
 
@@ -320,82 +307,126 @@ module.exports = function (RED) {
   }
   RED.nodes.registerType('SmartHome-Bot-End', SmartHomeBotEnd)
 
-  class SmartHomeTmallBot {
+  class BizWeChatBot {
     constructor (config) {
       RED.nodes.createNode(this, config)
       var node = this
-
       this.config = config
-      this.deviceId = this.config.deviceId
-      this.auto = this.config.auto
+      this.address = this.config.address
+      
       this.account = RED.nodes.getNode(this.config.account)
-      this.account.addDevice(this.deviceId, this, 'tmall')
+      this.account.addDevice('wechat', this)
+      this.account.addDevice('command', this)
 
       node.on('close', function (removed, done) {
-        node.account.removeDevice(this.deviceId, 'tmall')
+        node.account.removeDevice('wechat')
+        node.account.removeDevice('command')
         done()
       })
 
       // eslint-disable-next-line no-unused-vars
       node.onReceive = function (msg) {
         try {
-          const messageData = JSON.parse(msg.toString())
-          const sendData = {}
-          const intent = messageData['intent']
-          sendData['intent'] = messageData['intent']
-          sendData['name'] = messageData['name']
-          sendData['payload'] = {}
-          sendData['data'] = messageData['data']
-          sendData['deviceId'] = this.deviceId
-          if (intent === 'AliGenie.Iot.Device.Query') {
-            node.send([sendData, null])
-          } else if (intent === 'AliGenie.Iot.Device.Control') {
-            node.send([null, sendData])
-            if (node.auto) {
-              autoCallBack(sendData)
-            }
+          const data = JSON.parse(msg)
+          // console.log(data)
+
+          if (data.data) { // 首页测试
+            axios.get(node.address)
+              .then(function (response) {
+                node.account.mqttClient.publish(
+                  'smarthomefans/' + node.account.credentials.username + '/' + 'wechat' + '/set',
+                  response.data)
+                  node.status({ text: `获取首页信息成功:${new Date().getTime()}` })
+              })
+              .catch(function (err) {
+                node.status({ text: `访问首页异常，${err.message}`, fill: 'red', shape: 'ring' })
+              })
+          }else if (data.cmd) { // 微信指令消息
+            axios.post(node.address, data.cmd
+              ).then(function(response){
+                node.account.mqttClient.publish(
+                  'smarthomefans/' + node.account.credentials.username + '/' + 'command' + '/set',
+                  response.data)
+                  node.status({ text: `微信指令成功:${new Date().getTime()}` })
+              }).catch(function(err){
+                node.status({ text: `指令异常，${err.message}`, fill: 'red', shape: 'ring' })
+              });
+          }else { //认证消息
+              axios.get(`${node.address}?msg_signature=${data.msg_signature}&timestamp=${data.timestamp}&nonce=${data.nonce}&echostr=${encodeURIComponent(data.echostr)}`)
+                .then(function (response) {
+                  node.account.mqttClient.publish(
+                    'smarthomefans/' + node.account.credentials.username + '/' + 'wechat' + '/set',
+                    response.data)
+                    node.status({ text: `微信认证成功:${new Date().getTime()}` })
+                })
+                .catch(function (err) {
+                  node.status({ text: `访问首页异常，${err.message}`, fill: 'red', shape: 'ring' })
+                })
           }
+          
         } catch (err) {
           console.log(err)
           this.status({ fill: 'red', shape: 'ring', text: '消息处理失败' })
           RED.comms.publish('debug', { msg: err })
         }
       }
-
-      function autoCallBack (sendData) {
-        const { data, deviceId } = sendData
-        data.payload = { deviceId }
-        if (node.account.connected) {
-          node.account.mqttClient.publish(
-            'smarthomefans/' + node.account.credentials.username + '/' + deviceId + '/set',
-            JSON.stringify(data))
-        }
-      }
     }
   }
-  RED.nodes.registerType('SmartHome-Tmall-Bot', SmartHomeTmallBot)
+  RED.nodes.registerType('BizWeChat-Bot', BizWeChatBot)
 
-  class SmartHomeTmallBotEnd {
+  class BizWeChatPushbear {
     constructor (config) {
       RED.nodes.createNode(this, config)
       var node = this
       this.config = config
+      this.address = this.config.address
+      
       this.account = RED.nodes.getNode(this.config.account)
-
-      node.on('input', function (msg) {
-        try {
-          const { data, deviceId } = msg
-
-          if (node.account.connected) {
-            node.account.mqttClient.publish(
-              'smarthomefans/' + node.account.credentials.username + '/' + deviceId + '/set',
-              JSON.stringify(data))
-          }
-        } catch (e) {
-          console.error(e)
-        }
+      this.account.addDevice('pushbear', this)
+  
+      node.on('close', function (removed, done) {
+        node.account.removeDevice('pushbear')
+        done()
       })
+  
+      // eslint-disable-next-line no-unused-vars
+      node.onReceive = async function (msg) {
+        try {
+          const data = JSON.parse(msg)
+          console.log(data)
+  
+          let title = ''
+          let content = ''
+          let time = '刚刚'
+          const rootDir = os.homedir()
+          const path = `${rootDir}/.node-red/pushbear/${data.date}/${data.fileName}.txt`
+          try {
+            const data = await readAsync(path)
+            const fileContent = JSON.parse(data)
+            title = fileContent.title
+            content = fileContent.description
+            const _date = new Date(fileContent.time)
+            time = _date.toLocaleString()
+          } catch (err) {
+            title = '文件不存在'
+            content = '请确认文件是否删除'
+            // time = ''
+          }
+
+          node.account.mqttClient.publish(
+            'smarthomefans/' + node.account.credentials.username + '/' + 'pushbear' + '/set',
+            JSON.stringify({title, content, time}))
+            node.status({ text: `获取资讯成功:${new Date().getTime()}` })
+          
+        } catch (err) {
+          console.log(err)
+          this.status({ fill: 'red', shape: 'ring', text: '消息处理失败' })
+          RED.comms.publish('debug', { msg: err })
+        }
+      }
     }
   }
-  RED.nodes.registerType('SmartHome-Tmall-Bot-End', SmartHomeTmallBotEnd)
+  RED.nodes.registerType('BizWeChat-Pushbear', BizWeChatPushbear)
 }
+
+

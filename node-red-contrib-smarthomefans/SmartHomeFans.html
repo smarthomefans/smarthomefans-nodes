@@ -59,8 +59,8 @@ RED.nodes.registerType('SmartHome-Bot-Account', {
 
 <script type="text/javascript">
     RED.nodes.registerType('SmartHome-Bot', {
-        category: 'SmartHomeFans-Xiaoai',
-        color: '#FFFF00',
+        category: '泛艺-小爱',
+        color: '#00c4ff',
         defaults: {
             name: { value: "" },
             account: { type: "SmartHome-Bot-Account", required: true },
@@ -70,7 +70,7 @@ RED.nodes.registerType('SmartHome-Bot-Account', {
         },
         inputs: 0,
         outputs: 2,
-        icon: "SmartHome-Bot.png",
+        icon: "xiaoxi.svg",
         paletteLabel: function () {
             return "小爱-输入";
         },
@@ -109,15 +109,15 @@ RED.nodes.registerType('SmartHome-Bot-Account', {
 
 <script type="text/javascript">
     RED.nodes.registerType('SmartHome-Bot-End', {
-        category: 'SmartHomeFans-Xiaoai',
-        color: '#FFFF00',
+        category: '泛艺-小爱',
+        color: '#00c4ff',
         defaults: {
             name: { value: "" },
             account: { type: "SmartHome-Bot-Account", required: true }
         },
         inputs: 1,
         outputs: 0,
-        icon: "SmartHome-Bot.png",
+        icon: "xiaoxi.svg",
         paletteLabel: function () {
             return "小爱-输出"
         },
@@ -143,29 +143,28 @@ RED.nodes.registerType('SmartHome-Bot-Account', {
     <p></p>
 </script>
 
+
 <script type="text/javascript">
-    RED.nodes.registerType('SmartHome-Tmall-Bot', {
-        category: 'SmartHomeFans-Tmall',
-        color: '#FFFF00',
+    RED.nodes.registerType('BizWeChat-Bot', {
+        category: '泛艺-小爱',
+        color: '#00c4ff',
         defaults: {
             name: { value: "" },
             account: { type: "SmartHome-Bot-Account", required: true },
-            deviceId: { value: "", required: true},
-            auto:{ value: false}
+            address: { value: "", required: true}
         },
         inputs: 0,
-        outputs: 2,
-        icon: "SmartHome-Bot.png",
+        outputs: 0,
+        icon: "oauth.svg",
         paletteLabel: function () {
-            return "天猫-输入";
+            return "企业微信";
         },
         label: function () {
-            return this.name || this.deviceId || '默认设备';
+            return this.name || '默认企业微信';
         }
     });
 </script>
-
-<script type="text/x-red" data-template-name="SmartHome-Tmall-Bot">
+<script type="text/x-red" data-template-name="BizWeChat-Bot">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
@@ -174,41 +173,50 @@ RED.nodes.registerType('SmartHome-Bot-Account', {
         <label for="node-input-account"><i class="fa fa-tag"></i> Account</label>
         <input type="text" id="node-input-account" placeholder="Account">
     </div>
+
     <div class="form-row">
-        <label for="node-input-deviceId"><i class="fa fa-cog"></i> DeviceId</label>
-        <input type="text" id="node-input-deviceId">
+        <label for="node-input-address"><i class="fa fa-tag"></i>地址</label>
+        <input type="text" id="node-input-address" placeholder="企业微信局域网访问地址(http://192.168.1.3:3000)">
     </div>
+
     <div class="form-row">
-        <label style='width:100px;'><i class="fa fa-sign-in"></i> 控制自动反馈</label>
-        <input type="checkbox" id="node-input-auto" style="display: inline-block; width: auto; vertical-align: top;">
-      </div>
+        <label style="width:100%;padding-left:100px;margin-top:50px;box-sizing: border-box;" >
+          <a href="https://wx.zsxq.com/dweb2/index/group/51288182451214" target="_blank">加入知识星球计划你可以得到</a>
+          <li>及时的问答服务</li>
+          <li>小爱音响接入使用权</li>
+          <li>企业微信推送透传服务</li>
+          <li>最新的教程文章</li>
+        </label>
+    </div>
+    
 </script>
 
-<script type="text/x-red" data-help-name="SmartHome-Tmall-Bot">
+<script type="text/x-red" data-help-name="BizWeChat-Pushbear">
     <p></p>
 </script>
 
+
 <script type="text/javascript">
-    RED.nodes.registerType('SmartHome-Tmall-Bot-End', {
-        category: 'SmartHomeFans-Tmall',
-        color: '#FFFF00',
+    RED.nodes.registerType('BizWeChat-Pushbear', {
+        category: '泛艺-小爱',
+        color: '#00c4ff',
         defaults: {
             name: { value: "" },
-            account: { type: "SmartHome-Bot-Account", required: true }
+            account: { type: "SmartHome-Bot-Account", required: true },
+            address: { value: "", required: true}
         },
-        inputs: 1,
+        inputs: 0,
         outputs: 0,
-        icon: "SmartHome-Bot.png",
+        icon: "pushbear.svg",
         paletteLabel: function () {
-            return "天猫-输出"
+            return "Pushbear";
         },
         label: function () {
-            return this.name || this.deviceId || '默认输出';;
+            return this.name || 'Pushbear';
         }
     });
 </script>
-
-<script type="text/x-red" data-template-name="SmartHome-Tmall-Bot-End">
+<script type="text/x-red" data-template-name="BizWeChat-Pushbear">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
@@ -218,8 +226,18 @@ RED.nodes.registerType('SmartHome-Bot-Account', {
         <input type="text" id="node-input-account" placeholder="Account">
     </div>
 
+    <div class="form-row">
+        <label style="width:100%;padding-left:100px;margin-top:50px;box-sizing: border-box;" >
+          <a href="https://wx.zsxq.com/dweb2/index/group/51288182451214" target="_blank">加入知识星球计划你可以得到</a>
+          <li>及时的问答服务</li>
+          <li>小爱音响接入使用权</li>
+          <li>企业微信推送透传服务</li>
+          <li>最新的教程文章</li>
+        </label>
+    </div>
+    
 </script>
 
-<script type="text/x-red" data-help-name="SmartHome-Tmall-Bot-End">
+<script type="text/x-red" data-help-name="BizWeChat-Pushbear">
     <p></p>
 </script>
