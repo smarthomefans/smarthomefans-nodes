@@ -12,7 +12,7 @@ class XiaoAi {
     if (this.config) {
         this.config.username = this.config.credentials.username
       }
-    console.log(this.config)
+    // console.log(this.config)
     this.sid = sid
   }
 

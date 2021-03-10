@@ -15,7 +15,8 @@
   ],
   "node-red": {
     "nodes": {
-      "SmartHomeFans": "SmartHomeFans.js"
+      "SmartHomeFans": "SmartHomeFans.js",
+      "FanyiBot": "FanyiBot.js"
     }
   },
   "bugs": {

@@ -56,6 +56,7 @@ module.exports = function (RED) {
           username: this.username,
           password: this.password,
           reconnectPeriod: 1000 * 60,
+          connectTimeout: 1000 * 30,
           clean: true
         }
         this.mqttClient = mqtt.connect('tcp://mqtt.nodered.top:50001', mqttOptions)

@@ -9,7 +9,7 @@ function tts (msg, { cookie, deviceId }) {
     message: JSON.stringify({ text: msg }),
     method: 'text_to_speech',
     path: 'mibrain',
-    requestId: randomString(30)
+    requestId: 'app_ios_' + randomString(30)
   }
   const url = appendParam(API.USBS, querystring.stringify(param))
 

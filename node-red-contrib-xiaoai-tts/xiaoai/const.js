@@ -6,14 +6,14 @@ const APP_VER = '2.0.10'
 
 const APP_UA = 'APP/com.xiaomi.mico APPV/2.1.17 iosPassportSDK/3.4.1 iOS/13.3.1'
 const MINA_UA =
-  'MISoundBox/2.1.17 (com.xiaomi.mico; build:2.1.55; iOS 13.3.1) Alamofire/4.8.2 MICO/iOSApp/appStore/2.1.17'
+  'MiHome/6.0.103 (com.xiaomi.mihome; build:6.0.103.1; iOS 14.4.0) Alamofire/6.0.103 MICO/iOSApp/appStore/6.0.103'
 
 
 const API = {
-  USBS: 'https://api.mina.mi.com/remote/ubus',
+  USBS: 'https://api2.mina.mi.com/remote/ubus',
   SERVICE_AUTH: 'https://account.xiaomi.com/pass/serviceLoginAuth2',
   SERVICE_LOGIN: 'https://account.xiaomi.com/pass/serviceLogin',
-  DEVICE_LIST: 'https://api.mina.mi.com/admin/v2/device_list',
+  DEVICE_LIST: 'https://api2.mina.mi.com/admin/v2/device_list',
   DEVICE_MI: 'https://i.mi.com/find/device'
 }
 

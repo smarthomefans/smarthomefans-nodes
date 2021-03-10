@@ -1,0 +1,104 @@
+<script type="text/javascript">
+    RED.nodes.registerType('Fanyi-Bot', {
+        category: '泛艺-小爱',
+        color: '#00c4ff',
+        defaults: {
+            name: { value: "" },
+            account: { type: "SmartHome-Bot-Account", required: true },
+            hass: { type: "Fanyi-Hass-Config", required: true },
+            jsonConfig: { value: "", required: true },
+            deviceId: { value: "", required: true },
+            entityId: { value: "", required: true },
+            auto: { value: false }
+        },
+        inputs: 0,
+        outputs: 0,
+        icon: "xiaoxi.svg",
+        paletteLabel: function () {
+            return "小爱2.0";
+        },
+        label: function () {
+            return this.name || this.deviceId || '默认设备';
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="Fanyi-Bot">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-account"><i class="fa fa-tag"></i> Account</label>
+        <input type="text" id="node-input-account" placeholder="Account">
+    </div>
+    <div class="form-row">
+        <label for="node-input-hass"><i class="fa fa-tag"></i> Hass</label>
+        <input type="text" id="node-input-hass" placeholder="hass 配置信息">
+    </div>
+    <div class="form-row">
+        <label for="node-input-jsonConfig"><i class="fa fa-tag"></i> 配置</label>
+        <select name="pets" id="node-input-jsonConfig" placeholder="指定设备类型配置信息">
+            <option value="plug">单孔插座</option>
+            <option value="sensor">温湿度传感器</option>
+            <option value="colorLight">调色灯</option>
+            <option value="switchType">开关</option>
+            <option value="fv">窗帘</option>
+            <option value="conditioner">空调</option>
+            <option value="fan">风扇</option>
+            <option value="temperatureLight">调光灯</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-deviceId"><i class="fa fa-cog"></i> DeviceId</label>
+        <input type="text" id="node-input-deviceId">
+    </div>
+    <div class="form-row">
+        <label for="node-input-entityId"><i class="fa fa-cog"></i> EntityId</label>
+        <input type="text" id="node-input-entityId">
+    </div>
+    <div class="form-row">
+        <label style='width:100px;'><i class="fa fa-sign-in"></i> 控制自动反馈</label>
+        <input type="checkbox" id="node-input-auto" style="display: inline-block; width: auto; vertical-align: top;">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="Fanyi-Bot">
+    <p>选择传感器类型的时候，EntityId可以使用英文逗号分开，支持温度、湿度，pm2.5三种传感器</p>
+</script>
+
+
+<script type="text/javascript">
+    RED.nodes.registerType('Fanyi-Hass-Config', {
+        category: 'config',
+        defaults: {
+            name: { type: 'text', value: '' },
+            url: { type: 'text', required: true, value: '' },
+            token: { type: 'text', required: true, value: '' }
+        },
+        label: function () {
+            return this.name || '默认Hass'
+        }
+    })
+</script>
+
+<script type="text/x-red" data-template-name="Fanyi-Hass-Config">
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-tag"></i>名字</label>
+        <input type="text" id="node-config-input-name" placeholder="默认Hass"/>
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-url"><i class="fa fa-tag"></i>地址</label>
+        <input type="text" id="node-config-input-url" placeholder="Hass地址"/>
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-token"><i class="fa fa-tag"></i>Token</label>
+        <input type="text" id="node-config-input-token" placeholder="Hass Token"/>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="Fanyi-Hass-Config">
+    <p>配置 hass 访问地址和 Token</p>
+    <p>地址格式：http://192.168.1.2:8123</p>
+    <p>Token 是 hass长期访问的 Token</p>
+</script>

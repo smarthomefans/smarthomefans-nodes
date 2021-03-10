@@ -9,7 +9,7 @@ function mibrain (operation, method, { cookie, deviceId }) {
     message: JSON.stringify(operation),
     method: method,
     path: 'mibrain',
-    requestId: randomString(30)
+    requestId: 'app_ios_' + randomString(30)
   }
   const url = appendParam(API.USBS, querystring.stringify(param))
 
