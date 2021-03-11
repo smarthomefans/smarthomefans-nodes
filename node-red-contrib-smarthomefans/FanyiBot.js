@@ -41,7 +41,7 @@ module.exports = function (RED) {
       node.onReceive = function (msg) {
         try {
           const messageData = JSON.parse(msg.toString());
-          console.log(messageData)
+          // console.log(messageData)
           const sendData = {};
           const intent = messageData["intent"];
           sendData["intent"] = messageData["intent"];

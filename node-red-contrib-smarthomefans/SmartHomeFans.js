@@ -227,7 +227,7 @@ module.exports = function (RED) {
       }
 
       function autoCallBack (sendData) {
-        const { data, deviceId } = sendData
+        const { data, deviceId , intent} = sendData
         data.map(p => {
           p.status = 0
           return p
@@ -235,7 +235,7 @@ module.exports = function (RED) {
         if (node.account.connected) {
           node.account.mqttClient.publish(
             'smarthomefans/' + node.account.credentials.username + '/' + deviceId + '/set',
-            JSON.stringify(data))
+            JSON.stringify({data, intent}))
         }
       }
     }
@@ -277,7 +277,7 @@ module.exports = function (RED) {
           if (node.account.connected) {
             node.account.mqttClient.publish(
               'smarthomefans/' + node.account.credentials.username + '/' + deviceId + '/set',
-              JSON.stringify(data))
+              JSON.stringify({data, intent}))
           }
         } catch (e) {
           console.error(e)

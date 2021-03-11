@@ -1,24 +1,5 @@
 const utils = require("./utils");
 
-const CONFIG = {
-    'cool': 1,
-    'hot': 2,
-    'fan_only':3,
-    'dry': 4,
-    'auto': 0,
-    'unknown': 0,
-    'off': 0,
-    'unavailable': 0,
-}
-
-const TRAN_CONFIG = {
-    1: 'cool',
-    2: 'hot',
-    3: 'fan_only',
-    4: 'dry',
-    5: 'auto',
-}
-
 function fanType(intent, payload, sendData, node) {
     let doBack = false
     if (intent === "get-properties") {
@@ -51,13 +32,13 @@ function fanType(intent, payload, sendData, node) {
       }
       node.hass.homeassistant.callService(tranData[0], utils.getDomain(node.entityId), tranData[1])
       .then((info) => {
-        console.log(info)
+        // console.log(info)
         if (!doBack) {
             utils.autoCallBack(sendData, node);
         }
       })
       .catch((err) => {
-        console.log(`${node.entityId} 状态反馈失败: ${err}`);
+        console.log(`${node.entityId} 控制设备失败: ${err}`);
         sendData.data[0]['status'] = -1
         utils.sendToXiaoai(sendData, node)
       });

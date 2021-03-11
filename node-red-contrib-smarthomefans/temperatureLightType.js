@@ -18,19 +18,20 @@ function temperatureLightType(intent, payload, sendData, node) {
           utils.sendToXiaoai(sendData, node)
         })
         .catch((err) => {
+          utils.sendToXiaoai(sendData, node)
           console.log(`${node.entityId} 状态反馈失败: ${err}`);
         });
     } else if (intent === "set-properties") {
       tranData = tran_action(payload, node.entityId)
       node.hass.homeassistant.callService(tranData[0], utils.getDomain(node.entityId), tranData[1])
       .then((info) => {
-        console.log(info)
+        // console.log(info)
         if (!doBack) {
             utils.autoCallBack(sendData, node);
         }
       })
       .catch((err) => {
-        console.log(`${node.entityId} 状态反馈失败: ${err}`);
+        console.log(`${node.entityId} 控制设备失败: ${err}`);
         sendData.data[0]['status'] = -1
         utils.sendToXiaoai(sendData, node)
       });

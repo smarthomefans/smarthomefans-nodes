@@ -40,9 +40,9 @@ function deviceInformation(item) {
           intent === "get-properties" &&
           !p.hasOwnProperty("status")
         ) {
-          console.log(`${key} 没有找到`);
+          console.log(`${key} 没有找到， 指令为: ${intent}`);
           p.status = -1;
-          p.description = "控制失败，请检查流程";
+          p.description = "响应失败，请检查流程";
         }
         return p;
       });
@@ -56,7 +56,7 @@ function deviceInformation(item) {
             "/" +
             deviceId +
             "/set",
-          JSON.stringify(data)
+          JSON.stringify({intent, data})
         );
       }
     } catch (e) {
@@ -69,7 +69,7 @@ function deviceInformation(item) {
   }
 
   function autoCallBack(sendData, node) {
-    const { data, deviceId } = sendData;
+    const { data, deviceId , intent} = sendData;
     data.map((p) => {
       p.status = 0;
       return p;
@@ -81,7 +81,7 @@ function deviceInformation(item) {
           "/" +
           deviceId +
           "/set",
-        JSON.stringify(data)
+        JSON.stringify({intent, data})
       );
     }
   }
