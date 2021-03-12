@@ -54,4 +54,10 @@ function rgbToInt (rgb) {
     return rgb[0] << 16 | rgb[1]<< 8 | rgb[2];
   }
 
-  module.exports = {hexToRgb, rgbToInt}
+function decimalToHex(d) {
+	let hex = Number(d).toString(16);
+	hex = "000000".substr(0, 6 - hex.length) + hex;
+	return hex;
+}
+
+  module.exports = {hexToRgb, rgbToInt, decimalToHex}

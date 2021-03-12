@@ -56,7 +56,7 @@ function colorLightType(intent, payload, sendData, node) {
       const brightness = payload['brightness'] /100 * 256
       return ['turn_on', {"entity_id": entityId, brightness}]
     }else if(payload.hasOwnProperty('color')){
-        const rgb_color = colorUtils.hexToRgb(Number(payload['color']).toString(16))
+        const rgb_color = colorUtils.hexToRgb(colorUtils.decimalToHex(payload['color']))
       return ['turn_on', {"entity_id": entityId, rgb_color}]
     }else {
         return ['turn_on', {"entity_id": entityId}]
