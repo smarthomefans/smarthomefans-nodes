@@ -353,16 +353,20 @@ module.exports = function (RED) {
                 node.status({ text: `指令异常，${err.message}`, fill: 'red', shape: 'ring' })
               });
           }else { //认证消息
-              axios.get(`${node.address}?msg_signature=${data.msg_signature}&timestamp=${data.timestamp}&nonce=${data.nonce}&echostr=${encodeURIComponent(data.echostr)}`)
-                .then(function (response) {
-                  node.account.mqttClient.publish(
-                    'smarthomefans/' + node.account.credentials.username + '/' + 'wechat' + '/set',
-                    response.data)
-                    node.status({ text: `微信认证成功:${new Date().getTime()}` })
-                })
-                .catch(function (err) {
-                  node.status({ text: `访问首页异常，${err.message}`, fill: 'red', shape: 'ring' })
-                })
+            axios.get(`${node.address}?msg_signature=${data.msg_signature}&timestamp=${data.timestamp}&nonce=${data.nonce}&echostr=${encodeURIComponent(data.echostr)}`, {
+              transformResponse: (data, headers ) => {
+                return data;
+              }
+            })
+              .then(function (response) {
+                node.account.mqttClient.publish(
+                  'smarthomefans/' + node.account.credentials.username + '/' + 'wechat' + '/set',
+                  response.data)
+                  node.status({ text: `微信认证成功:${new Date().getTime()}` })
+              })
+              .catch(function (err) {
+                node.status({ text: `访问首页异常，${err.message}`, fill: 'red', shape: 'ring' })
+              })
           }
           
         } catch (err) {
