@@ -25,7 +25,8 @@
   "author": "yaming116",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": ">=0.21.2",
+    "ws": ">=7.4.6",
     "mqtt": "^4.2.6"
   },
   "devDependencies": {

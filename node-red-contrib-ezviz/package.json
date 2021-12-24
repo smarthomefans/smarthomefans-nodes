@@ -25,8 +25,8 @@
   "author": "yaming116",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.18.0",
-    "lodash": "^4.17.14",
+    "axios": ">=0.21.2",
+    "lodash": ">=4.17.21",
     "moment": "^2.24.0"
   },
   "devDependencies": {
