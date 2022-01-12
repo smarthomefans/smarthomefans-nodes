@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-gps",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "汽车在线和万物在线 ，可以获取设备的gps位置和逆地理位置解析",
   "main": "index.js",
   "repository": {
