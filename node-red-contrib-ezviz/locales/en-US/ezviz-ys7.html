@@ -1,0 +1,149 @@
+
+<script type="text/x-red" data-help-name="ezviz-ys7">
+    <p>This interface is used to obtain the door opening record of the door where the fingerprint lock is located by page.</p>
+    <h3>Enter</h3>
+    <dl class="message-properties">
+        <dt>payload
+            <span class="property-type">string</span>
+        </dt>
+        <dd>The serial number of the fluorite cloud device</dd>
+    </dl>
+    <h3>输出</h3>
+    <p>当发生错误的时候，将会从输出2里面输出msg.payload = {} ,如果需要请做相关业务处理</p>
+    <p>默认payload里面包含last和diff</p>
+    <p>last: 最后打开门的人员信息</p>
+    <p>diff: 是本地打开人员和上次不同的信息，默认没有缓存会展示最后20条信息</p>
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align:left">key</th>
+                <th style="text-align:left">类型</th>
+                <th style="text-align:center">备注</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align:left">lockUserName</td>
+                <td style="text-align:left">String</td>
+                <td style="text-align:center">用户名</td>
+            </tr>
+            <tr>
+                <td style="text-align:left">openType</td>
+                <td style="text-align:left">Integer</td>
+                <td style="text-align:center">开锁方式(0-指纹 1-密码 2-卡)</td>
+            </tr>
+            <tr>
+                <td style="text-align:left">openTime</td>
+                <td style="text-align:left">Long</td>
+                <td style="text-align:center">开锁时间,时间格式为1457420564508,精确到毫秒</td>
+            </tr>
+        </tbody>
+    </table>
+
+    
+</script>
+<script type="text/x-red" data-help-name="ezviz-capture">
+    <p>抓拍设备当前画面，该接口仅适用于IPC或者关联IPC的DVR设备，该接口并非预览时的截图功能。</p>
+    <p>注意：设备抓图能力有限，请勿频繁调用，频繁调用将会被拉入限制黑名单,建议调用的间隔为4s左右。</p>
+    <h3>输入</h3>
+    <dl class="message-properties">
+        <dt>payload
+            <span class="property-type">string</span>
+        </dt>
+        <dd>萤石云设备序列号</dd>
+      
+    </dl>
+    <h3>输出</h3>
+    <p>当发生错误的时候，将会从输出2里面输出msg.payload = {} ,如果需要请做相关业务处理</p>
+  
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align:left">key</th>
+                <th style="text-align:left">类型</th>
+                <th style="text-align:center">备注</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="text-align:left">picUrl</td>
+                <td style="text-align:left">String</td>
+                <td style="text-align:center">抓拍后的图片路径，图片保存有效期为2小时</td>
+            </tr>
+          
+        </tbody>
+    </table>
+
+    
+</script>
+<script type="text/x-red" data-help-name="ezviz-preset-move">
+    <p>移动云台到预置点</p>
+    <p>注意：请勿频繁调用，频繁调用将会被拉入限制黑名单,建议调用的间隔为4s左右。</p>
+    <h3>输入</h3>
+    <dl class="message-properties">
+        <dt>payload
+            <span class="property-type">string</span>
+        </dt>
+        <dd>萤石云设备序列号</dd>
+            <dt>index
+            <span class="property-type">string</span>
+        </dt>
+        <dd>预置点号</dd>
+      
+    </dl>
+    <h3>输出</h3>
+    <p>当发生错误的时候，将会从输出2里面输出msg.payload = {} ,如果需要请做相关业务处理</p> 
+</script>
+<script type="text/x-red" data-help-name="ezviz-camera-list">
+    <p>获取摄像头列表</p>     
+    <h3>输入</h3>
+    <dl class="message-properties">
+        <dt>pageStart
+            <span class="property-type">int</span>
+        </dt>
+        <dd>分页起始页，从0开始</dd>
+    <dt>pageSize
+            <span class="property-type">int</span>
+        </dt>
+        <dd>分页大小，默认为10，最大为50</dd>
+      
+    </dl>
+    <h3>输出</h3>
+    <p>当发生错误的时候，将会从输出2里面输出msg.payload = {} ,如果需要请做相关业务处理</p> 
+</script>
+<script type="text/x-red" data-help-name="ezviz-scene-switch-status">
+    <p>获取镜头遮蔽开关状态</p>
+    <p>注意：请勿频繁调用，频繁调用将会被拉入限制黑名单,建议调用的间隔为4s左右。</p>
+    <h3>输入</h3>
+    <dl class="message-properties">
+        <dt>payload
+            <span class="property-type">string</span>
+        </dt>
+        <dd>萤石云设备序列号</dd>      
+      
+    </dl>
+    <h3>输出</h3>
+    <p>当发生错误的时候，将会从输出2里面输出msg.payload = {} ,如果需要请做相关业务处理</p> 
+</script>
+<script type="text/x-red" data-help-name="ezviz-scene-switch-set">
+    <p>设置镜头遮蔽开关</p>
+    <p>注意：请勿频繁调用，频繁调用将会被拉入限制黑名单,建议调用的间隔为4s左右。</p>
+    <h3>输入</h3>
+    <dl class="message-properties">
+        <dt>payload
+            <span class="property-type">string</span>
+        </dt>
+        <dd>萤石云设备序列号</dd>
+        <dt>channelNo
+            <span class="property-type">int</span>
+        </dt>
+        <dd>通道号，不传表示设备本身</dd>
+        <dt>enable
+            <span class="property-type">int</span>
+        </dt>
+        <dd>状态：0-关闭，1-开启</dd>
+      
+    </dl>
+    <h3>输出</h3>
+    <p>当发生错误的时候，将会从输出2里面输出msg.payload = {} ,如果需要请做相关业务处理</p> 
+</script>
