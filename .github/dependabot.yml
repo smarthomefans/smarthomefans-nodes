@@ -5,7 +5,15 @@
 
 version: 2
 updates:
-  - package-ecosystem: '' # See documentation for possible values
-    directory: '/' # Location of package manifests
+  - package-ecosystem: 'npm' # See documentation for possible values
+    directory: '/node-red-contrib-dnspod' # Location of package manifests
+    schedule:
+      interval: 'weekly'
+  - package-ecosystem: 'npm' # See documentation for possible values
+    directory: '/node-red-contrib-ezviz' # Location of package manifests
+    schedule:
+      interval: 'weekly'
+  - package-ecosystem: 'npm' # See documentation for possible values
+    directory: '/node-red-contrib-git-backup' # Location of package manifests
     schedule:
       interval: 'weekly'
