@@ -34,6 +34,6 @@
     "eslint": "^5.16.0",
     "eslint-utils": "^3.0.0",
     "eslint-config-vue": "^2.0.2",
-    "eslint-plugin-vue": "^5.2.2"
+    "eslint-plugin-vue": "^6.2.2"
   }
 }
