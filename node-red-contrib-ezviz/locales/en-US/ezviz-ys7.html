@@ -8,34 +8,34 @@
         </dt>
         <dd>The serial number of the fluorite cloud device</dd>
     </dl>
-    <h3>输出</h3>
-    <p>当发生错误的时候，将会从输出2里面输出msg.payload = {} ,如果需要请做相关业务处理</p>
-    <p>默认payload里面包含last和diff</p>
-    <p>last: 最后打开门的人员信息</p>
-    <p>diff: 是本地打开人员和上次不同的信息，默认没有缓存会展示最后20条信息</p>
+    <h3>Output</h3>
+     <p>When an error occurs, msg.payload = {} will be output from output 2, please do relevant business processing if necessary</p>
+     <p>The default payload contains last and diff</p>
+     <p>last: The information of the person who opened the door last</p>
+     <p>diff: The information of the local opener is different from the last time. By default, the last 20 information will be displayed if there is no cache</p>
     <table>
         <thead>
             <tr>
                 <th style="text-align:left">key</th>
-                <th style="text-align:left">类型</th>
-                <th style="text-align:center">备注</th>
+                <th style="text-align:left">Type</th>
+                 <th style="text-align:center">Remarks</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td style="text-align:left">lockUserName</td>
                 <td style="text-align:left">String</td>
-                <td style="text-align:center">用户名</td>
+                <td style="text-align:center">userName</td>
             </tr>
             <tr>
                 <td style="text-align:left">openType</td>
                 <td style="text-align:left">Integer</td>
-                <td style="text-align:center">开锁方式(0-指纹 1-密码 2-卡)</td>
+                <td style="text-align:center">Unlock method (0-fingerprint 1-password 2-card)</td>
             </tr>
             <tr>
                 <td style="text-align:left">openTime</td>
                 <td style="text-align:left">Long</td>
-                <td style="text-align:center">开锁时间,时间格式为1457420564508,精确到毫秒</td>
+                <td style="text-align:center">Unlock time, the time format is 1457420564508, accurate to milliseconds</td>
             </tr>
         </tbody>
     </table>
@@ -43,18 +43,18 @@
     
 </script>
 <script type="text/x-red" data-help-name="ezviz-capture">
-    <p>抓拍设备当前画面，该接口仅适用于IPC或者关联IPC的DVR设备，该接口并非预览时的截图功能。</p>
-    <p>注意：设备抓图能力有限，请勿频繁调用，频繁调用将会被拉入限制黑名单,建议调用的间隔为4s左右。</p>
-    <h3>输入</h3>
+     <p>Snapshot the current screen of the device. This interface is only applicable to IPC or DVR devices associated with IPC. This interface is not a screenshot function during preview. </p>
+     <p>Note: The ability of the device to capture pictures is limited. Please do not call frequently. Frequent calls will be pulled into the restricted blacklist. It is recommended that the call interval be about 4s. </p>
+     <h3>Enter</h3>
     <dl class="message-properties">
         <dt>payload
             <span class="property-type">string</span>
         </dt>
-        <dd>萤石云设备序列号</dd>
+        <dd>EZVIZ cloud device serial number</dd>
       
     </dl>
-    <h3>输出</h3>
-    <p>当发生错误的时候，将会从输出2里面输出msg.payload = {} ,如果需要请做相关业务处理</p>
+    <h3>Output</h3>
+    <p>When an error occurs, msg.payload = {} will be output from output 2, please do relevant business processing if necessary</p>
   
     <table>
         <thead>
