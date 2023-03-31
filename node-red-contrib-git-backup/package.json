@@ -32,6 +32,6 @@
   "homepage": "https://github.com/smarthomefans/smarthomefans-nodes/node-red-contrib-git-backup",
   "dependencies": {
     "child_process": "^1.0.2",
-    "fs-extra": "^10.1.0"
+    "fs-extra": "^11.1.1"
   }
 }
