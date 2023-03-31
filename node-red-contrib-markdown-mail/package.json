@@ -26,7 +26,7 @@
   "author": "yaming116",
   "license": "MIT",
   "dependencies": {
-    "marked": "^0.7.0",
+    "marked": "^4.0.10",
     "mustache": "^3.0.1"
   }
 }
