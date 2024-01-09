@@ -162,6 +162,9 @@ module.exports = function (RED) {
             case "setFanSpeed":
               node.account.gateWay.setFanSpeed(payload, this.mac);
               break;
+            case 'setModeWithPower':
+              node.account.gateWay.setModeWithPower(payload,1 , this.mac);
+              break;
             default:
               console.log("未匹配到对应指令");
           }
