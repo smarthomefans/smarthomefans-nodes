@@ -24,7 +24,6 @@
   "author": "yaming116",
   "license": "MIT",
   "dependencies": {
-    "jimp": "^0.16.1"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",

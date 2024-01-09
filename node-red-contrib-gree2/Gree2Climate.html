@@ -1,0 +1,95 @@
+<script type="text/javascript">
+  RED.nodes.registerType("Gree2Climate-Account", {
+    category: "config",
+    defaults: {
+      name: { value: "默认配置" },
+    },
+    credentials: {
+      ip: { type: "text", required: true, value: "" },
+    },
+    label: function () {
+      return this.name;
+    },
+  });
+</script>
+
+<script type="text/x-red" data-template-name="Gree2Climate-Account">
+  <div class="form-row">
+      <label for="node-config-input-name"><i class="fa fa-tag"></i>配置名称</label>
+      <input type="text" id="node-config-input-name">
+  </div>
+  <div class="form-row">
+      <label for="node-config-input-ip"><i class="fa fa-tag"></i> ip </label>
+      <input type="text" id="node-config-input-ip" placeholder="云控ip">
+  </div>
+</script>
+
+<script type="text/javascript">
+  RED.nodes.registerType("Gree2Climate-DeviceList", {
+    category: "格力云控",
+    color: "#00c4ff",
+    defaults: {
+      name: { value: "" },
+      account: { type: "Gree2Climate-Account", required: true },
+      index: { value: "", required: false },
+    },
+    inputs: 1,
+    outputs: 1,
+    paletteLabel: function () {
+      return "设备列表";
+    },
+    label: function () {
+      return this.name || this.deviceId || "默认设备列表";
+    },
+  });
+</script>
+
+<script type="text/x-red" data-template-name="Gree2Climate-DeviceList">
+  <div class="form-row">
+      <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+      <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+  <div class="form-row">
+      <label for="node-input-account"><i class="fa fa-tag"></i> Account</label>
+      <input type="text" id="node-input-account" placeholder="Account">
+  </div>
+  <div class="form-row">
+      <label for="node-input-index"><i class="fa fa-cog"></i> 设备列表索引</label>
+      <input type="number" id="node-input-index" placeholder="默认不用填写">
+  </div>
+</script>
+
+<script type="text/javascript">
+  RED.nodes.registerType("Gree2Climate", {
+    category: "格力云控",
+    color: "#00c4ff",
+    defaults: {
+      name: { value: "" },
+      account: { type: "Gree2Climate-Account", required: true },
+      mac: { value: "", required: true },
+    },
+    inputs: 1,
+    outputs: 1,
+    paletteLabel: function () {
+      return "设备控制";
+    },
+    label: function () {
+      return this.name || this.deviceId || "默认设备控制";
+    },
+  });
+</script>
+
+<script type="text/x-red" data-template-name="Gree2Climate">
+  <div class="form-row">
+      <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+      <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+  <div class="form-row">
+      <label for="node-input-account"><i class="fa fa-tag"></i> Account</label>
+      <input type="text" id="node-input-account" placeholder="Account">
+  </div>
+  <div class="form-row">
+      <label for="node-input-mac"><i class="fa fa-cog"></i> mac</label>
+      <input type="text" id="node-input-mac" placeholder="设备mac">
+  </div>
+</script>
