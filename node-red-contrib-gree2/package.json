@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-gree2",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "格力云控接入",
   "main": "index.js",
   "repository": {

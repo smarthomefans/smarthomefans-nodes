@@ -336,6 +336,10 @@ class Device {
     this._sendCommand([cmd.mode.code], [value], mac);
   }
 
+  setModeWithPower(value,power, mac) {
+    this._sendCommand([cmd.mode.code, cmd.power.code], [value, power], mac);
+  }
+
   /**
    * Set fan speed
    * @param {number} value Fan speed value (0-5)
