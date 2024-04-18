@@ -255,7 +255,7 @@ module.exports = function (RED) {
         } catch (err) {
           console.log(err);
           this.status({ fill: "red", shape: "ring", text: "消息处理失败" });
-          RED.comms.publish("debug", { msg: err });
+          RED.comms.publish("debug", { msg: err.stack || err.message });
         }
       };
 
@@ -327,6 +327,7 @@ module.exports = function (RED) {
           }
         } catch (e) {
           console.error(e);
+          RED.comms.publish("debug", { msg: err.stack || err.message });
         }
       });
 

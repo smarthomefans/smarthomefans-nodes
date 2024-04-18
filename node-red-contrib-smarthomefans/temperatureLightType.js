@@ -14,6 +14,8 @@ function temperatureLightType(intent, payload, sendData, node) {
             if (rang > 0) {
               sendData['color-temperature'] = parseInt((info.attributes.color_temp || 0) / rang * 9000 + 1000)
             }
+            const global = node.context().global
+            global.set(`xiaoai-${node.entityId}`, attr)
           }
           utils.sendToXiaoai(sendData, node)
         })
@@ -22,7 +24,7 @@ function temperatureLightType(intent, payload, sendData, node) {
           console.log(`${node.entityId} 状态反馈失败: ${err}`);
         });
     } else if (intent === "set-properties") {
-      tranData = tran_action(payload, node.entityId)
+      tranData = tran_action(payload, node.entityId, node)
       node.hass.homeassistant.callService(tranData[0], utils.getDomain(node.entityId), tranData[1])
       .then((info) => {
         // console.log(info)
@@ -42,16 +44,33 @@ function temperatureLightType(intent, payload, sendData, node) {
     }
   }
 
-  function tran_action(payload, entityId) {
+
+
+  function tran_action(payload, entityId, node) {
+    let control = 'turn_on'
+    const data = {"entity_id": entityId}
     if (payload.hasOwnProperty("on")) {
-      const control = payload.on ? 'turn_on' : 'turn_off'
-      return [control, {"entity_id": entityId}]
-    }else if(payload.hasOwnProperty('brightness')){
-      const brightness = payload['brightness'] /100 * 256
-      return ['turn_on', {"entity_id": entityId, brightness}]
-    }else {
-      return ['turn_on', {"entity_id": entityId}]
+      control = payload.on ? 'turn_on' : 'turn_off'
     }
+    if(payload.hasOwnProperty('brightness')){
+      const brightness = payload['brightness'] /100 * 256
+      data['brightness'] = brightness
+    }
+
+    if (payload.hasOwnProperty('color-temperature')) {
+      const global = node.context().global
+      const attr = global.get(`xiaoai-${node.entityId}`) || {}
+
+      let colorTemp = 0
+      if (attr.max_mireds && attr.min_mireds) {
+        colorTemp = payload['color-temperature'] /9000 * (attr.max_mireds - attr.min_mireds)
+      }else {
+        colorTemp = payload['color-temperature'] /9000 * (500 - 153)
+      }
+      data['color_temp'] = colorTemp
+    }
+
+    return [control, data]
   }
 
   module.exports = temperatureLightType

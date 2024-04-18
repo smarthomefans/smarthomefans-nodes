@@ -109,7 +109,7 @@ module.exports = function (RED) {
         } catch (err) {
           console.log(err);
           node.status({ fill: "red", shape: "ring", text: "消息处理失败" });
-          RED.comms.publish("debug", { msg: err });
+          RED.comms.publish("debug", { msg: err.stack || err.message });
         }
       };
     }
