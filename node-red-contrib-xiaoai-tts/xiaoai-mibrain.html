@@ -1,67 +1,138 @@
 <script type="text/javascript">
 
-RED.nodes.registerType('xiaoai-ai-service', {
-  category: '小米',
-  color: '#7ac6cb',
-  paletteLabel: '小爱ai service',
-  label () {
-    return this.name || '小爱ai service'
-  },
-  defaults: {
-    name: {
-      value: ''
+  RED.nodes.registerType('xiaoai-ai-service', {
+    category: '小米',
+    color: '#7ac6cb',
+    paletteLabel: '小爱ai service',
+    label() {
+      return this.name || '小爱ai service'
     },
-    xiaoai: {
-      value: '',
-      type: 'xiaoai-tts-configurator'
-    },
-    message: {
-      value: ''
-    },
-    tts: {
-      value: false
-    },
-    tts_play: {
-      value: false
-    },
-    device: {
-      value: ''
-    }
+    defaults: {
+      name: {
+        value: ''
+      },
+      xiaoai: {
+        value: '',
+        type: 'xiaoai-tts-configurator'
+      },
+      message: {
+        value: ''
+      },
+      tts: {
+        value: false
+      },
+      tts_play: {
+        value: false
+      },
+      device: {
+        value: ''
+      }
 
-  },
-  inputs: 1,
-  outputs: 2,
-  icon: 'ai.svg'
-})
-
-RED.nodes.registerType('xiaoai-nlp-result', {
-  category: '小米',
-  color: '#7ac6cb',
-  paletteLabel: 'nlp结果',
-  label () {
-    return this.name || 'nlp结果'
-  },
-  defaults: {
-    name: {
-      value: ''
     },
-    xiaoai: {
-      value: '',
-      type: 'xiaoai-tts-configurator'
+    inputs: 1,
+    outputs: 2,
+    icon: 'ai.svg'
+  })
+
+  RED.nodes.registerType('xiaoai-nlp-result', {
+    category: '小米',
+    color: '#7ac6cb',
+    paletteLabel: 'nlp结果',
+    label() {
+      return this.name || 'nlp结果'
     },
-    device: {
-      value: ''
-    }
+    defaults: {
+      name: {
+        value: ''
+      },
+      xiaoai: {
+        value: '',
+        type: 'xiaoai-tts-configurator'
+      },
+      device: {
+        value: ''
+      }
 
-  },
-  inputs: 1,
-  outputs: 2,
-  icon: 'nlp.svg'
-})
+    },
+    inputs: 1,
+    outputs: 2,
+    icon: 'nlp.svg'
+  })
 
+  RED.nodes.registerType('xiaoai-nlp-conversation', {
+    category: '小米',
+    color: '#7ac6cb',
+    paletteLabel: '对话记录',
+    label() {
+      return this.name || '对话记录'
+    },
+    defaults: {
+      name: {
+        value: ''
+      },
+      xiaoai: {
+        value: '',
+        type: 'xiaoai-tts-configurator'
+      },
+      device: {
+        value: ''
+      },
+      limit: {
+        value: ''
+      }
+
+    },
+    inputs: 1,
+    outputs: 2,
+    icon: 'nlp.svg'
+  })
+
+  RED.nodes.registerType('xiaoai-nlp-session', {
+    category: '小米',
+    color: '#7ac6cb',
+    paletteLabel: '登录信息',
+    label() {
+      return this.name || '登录信息'
+    },
+    defaults: {
+      name: {
+        value: ''
+      },
+      xiaoai: {
+        value: '',
+        type: 'xiaoai-tts-configurator'
+      }
+
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: 'nlp.svg'
+  })
+
+  RED.nodes.registerType('xiaoai-nlp-debug', {
+    category: '小米',
+    color: '#7ac6cb',
+    paletteLabel: '小米 debug',
+    label() {
+      return this.name || '小米 debug'
+    },
+    defaults: {
+      name: {
+        value: ''
+      },
+      xiaoai: {
+        value: '',
+        type: 'xiaoai-tts-configurator'
+      },
+
+    },
+    inputs: 1,
+    outputs: 2,
+    icon: 'nlp.svg'
+  })
 </script>
 
-    <script type="text/x-red" data-template-name="xiaoai-ai-service">
+<script type="text/x-red" data-template-name="xiaoai-ai-service">
           <div class="form-row">
             <label for="node-input-xiaoai"><i class="icon-tag"></i>配置</label>
             <input type="text" id="node-input-xiaoai">
@@ -96,7 +167,7 @@ RED.nodes.registerType('xiaoai-nlp-result', {
             </label>
           </div>
     </script>
-    <script type="text/x-red" data-help-name="xiaoai-ai-service">
+<script type="text/x-red" data-help-name="xiaoai-ai-service">
       <p>小爱音箱 ai service,节点里面实现了默认的队列信息,所以如果在多个NodeRed界面使用,请使用link节点连接到统一的ai-service节点</p>
       <p> 当前节点可以直接控制米家里面所有的设备，或用于查询一些指令： 例如，今天天气怎么样？或 打开厨房的灯</p>
       <p>不然可能引起播报信息错乱等异常信息</p>
@@ -126,7 +197,7 @@ RED.nodes.registerType('xiaoai-nlp-result', {
 
     </script>
 
-    <script type="text/x-red" data-template-name="xiaoai-nlp-result">
+<script type="text/x-red" data-template-name="xiaoai-nlp-result">
         <div class="form-row">
           <label for="node-input-xiaoai"><i class="icon-tag"></i>配置</label>
           <input type="text" id="node-input-xiaoai">
@@ -147,7 +218,7 @@ RED.nodes.registerType('xiaoai-nlp-result', {
           </label>
         </div>
     </script>
-    <script type="text/x-red" data-help-name="xiaoai-nlp-result">
+<script type="text/x-red" data-help-name="xiaoai-nlp-result">
 
       <p>nlp 结果查看</p>
       <h3>输入</h3>
@@ -164,3 +235,120 @@ RED.nodes.registerType('xiaoai-nlp-result', {
 
     </script>
 
+<script type="text/x-red" data-template-name="xiaoai-nlp-conversation">
+      <div class="form-row">
+        <label for="node-input-xiaoai"><i class="icon-tag"></i>配置</label>
+        <input type="text" id="node-input-xiaoai">
+      </div>
+      <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i>名称</label>
+        <input type="text" id="node-input-name">
+      </div>
+
+      <div class="form-row">
+        <label for="node-input-device"><i class="icon-tag"></i>默认设备</label>
+        <input type="text" id="node-input-device" placeholder="默认设备id">
+      </div>
+
+      <div class="form-row">
+        <label for="node-input-limit"><i class="icon-tag"></i>消息数量</label>
+        <input type="text" id="node-input-limit" placeholder="默认 1 条">
+      </div>
+
+      <div class="form-row">
+        <label style="width: 100%;text-align: right;padding-right: 34px;box-sizing: border-box;" >
+          <a href="https://bbs.iobroker.cn" target="_blank">此节点由 (ioBroker中国|智能家居)提供</a>
+        </label>
+      </div>
+  </script>
+<script type="text/x-red" data-help-name="xiaoai-nlp-conversation">
+
+    <p>对话记录</p>
+    <h3>输入</h3>
+    <dl class="message-properties">
+        <dt>device
+          <span class="property-type">string</span>
+        </dt>
+        <dd>设备唯一标识,用户指定tts设备</dd>
+
+        <dt>limit
+          <span class="property-type">number</span>
+        </dt>
+        <dd>对话消息数量</dd>
+
+    </dl>
+    <h3>输出</h3>
+    <p>当发生错误的时候，将会从输出2里面输出msg.payload = {} ,如果需要请做相关业务处理</p>
+    <p>其余信息查看输出</p>
+
+  </script>
+
+<script type="text/x-red" data-template-name="xiaoai-nlp-session">
+    <div class="form-row">
+      <label for="node-input-xiaoai"><i class="icon-tag"></i>配置</label>
+      <input type="text" id="node-input-xiaoai">
+    </div>
+    <div class="form-row">
+      <label for="node-input-name"><i class="icon-tag"></i>名称</label>
+      <input type="text" id="node-input-name">
+    </div>
+
+</script>
+<script type="text/x-red" data-help-name="xiaoai-nlp-session">
+
+  <p>获取登录信息</p>
+
+</script>
+
+<script type="text/x-red" data-template-name="xiaoai-nlp-debug">
+  <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i>名称</label>
+    <input type="text" id="node-input-name">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-xiaoai"><i class="icon-tag"></i>配置</label>
+    <input type="text" id="node-input-xiaoai">
+  </div>
+
+</script>
+<script type="text/x-red" data-help-name="xiaoai-nlp-debug">
+  <p>小米 debug</p>
+  <h3>输入</h3>
+  <dl class="message-properties">
+      <dt>url
+        <span class="property-type">string</span>
+      </dt>
+      <dd>请求 url</dd>
+
+      <dt>method
+        <span class="property-type">string</span>
+      </dt>
+      <dd>POST or GET</dd>
+
+      <dt>headers
+        <span class="property-type">json</span>
+      </dt>
+      <dd>请求头，目前只会帮助添加Content-Type、UA、Accept，其他信息需要自己添加，例如：Cookie</dd>
+
+      <dt>data
+        <span class="property-type">json</span>
+      </dt>
+      <dd>根据 header 里面的 Content-Type 觉得参数如何传递</dd>
+
+      <dt>type
+        <span class="property-type">string</span>
+      </dt>
+      <dd>默认是 json， 支持 raw， json, text</dd>
+      <dt>needCookie
+        <span class="property-type">boolean</span>
+      </dt>
+      <dd>传值代表需要追加当前账号cookie</dd>
+      
+
+  </dl>
+  <h3>输出</h3>
+  <p>当发生错误的时候，将会从输出2里面输出msg.payload = {} ,如果需要请做相关业务处理</p>
+  <p>其余信息查看输出</p>
+
+</script>

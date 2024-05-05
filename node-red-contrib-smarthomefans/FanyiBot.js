@@ -29,7 +29,13 @@ module.exports = function (RED) {
       } catch (error) {
         console.log(error)
       }
-      // console.log(this.jsonConfig)
+      if (this.hass) {
+        this.hass.checkEntityId(this.entityId)
+      }
+
+      
+      
+      
       this.account.addDevice(this.deviceId, this);
 
       node.on("close", function (removed, done) {
@@ -38,7 +44,7 @@ module.exports = function (RED) {
       });
 
       // eslint-disable-next-line no-unused-vars
-      node.onReceive = function (msg) {
+      node.onReceive = async function (msg) {
         try {
           const messageData = JSON.parse(msg.toString());
           // console.log(messageData)
@@ -54,6 +60,7 @@ module.exports = function (RED) {
           } else if (intent === "set-properties") {
             payload = {};
           }
+          
 
           const configPropertie = this.jsonConfig;
           sendData["configPropertie"] = configPropertie;
@@ -125,6 +132,8 @@ module.exports = function (RED) {
       this.url = config.url;
       this.token = config.token;
       var node = this;
+      this.devices = {}
+      this.connectionStatus = false
 
       this.homeassistant = new Homeassistant(this.url, this.token);
 
@@ -137,15 +146,46 @@ module.exports = function (RED) {
             shape: "dot",
             text: `连接成功，hass 版本: ${info.version}`,
           });
+          this.connectionStatus = true
+          try{
+            this.dealDevices()
+          }catch(err) {
+            console.log(`同步设备信息出错: ${err}`);
+          }
         })
         .catch((err) => {
-          node.error(`hass配置出错， 访问地址或Token错误: ${err}`);
+          console.log(`hass配置出错， 访问地址或Token错误: ${err}`);
           node.status({
             fill: "green",
             shape: "dot",
-            text: `hass配置出错，访问地址或Token错误: ${err}`,
+            text: `hass配置出错，访问地址或Token错误: ${err.message}`,
           });
+          this.connectionStatus = false
         });
+    }
+
+    async dealDevices() {
+       let list = await this.homeassistant.list()
+       if (list === "404: Not Found") {
+          return
+       }
+       list.forEach(entityState => {
+        let entityId = entityState.entity_id;
+        this.devices[entityId] = entityState
+       })
+
+       console.log('同步设备信息成功,总数量为：', Object.keys(this.devices).length)
+
+    }
+
+    async checkEntityId(entityId) {
+      if (!this.devices[entityId]) {
+        try{
+          await this.dealDevices()
+        }catch(err) {
+          console.log(`同步设备信息出错: ${err}`);
+        }
+      }
     }
   }
   RED.nodes.registerType("Fanyi-Hass-Config", FanyiHassConfig);

@@ -12,7 +12,6 @@ class XiaoAi {
     if (this.config) {
         this.config.username = this.config.credentials.username
       }
-    // console.log(this.config)
     this.sid = sid
   }
 
@@ -207,6 +206,21 @@ class XiaoAi {
     })
   }
 
+  conversation (limit, deviceId) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!this.client) {
+          await this.getSession()
+        }
+
+        const data = await this.client.conversation(limit, deviceId)
+        resolve(data)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
   wakteupTV (mac, deviceId) {
     return new Promise(async (resolve, reject) => {
       try {
@@ -228,6 +242,13 @@ class XiaoAi {
 
   async mediaplayer1 (action, device) {
     return await this.client[action](device)
+  }
+
+  async debug(url, method, headers, data, type, needCookie) {
+    if (!this.client) {
+      await this.getSession()
+    }
+    return await this.client.debug(url, method, headers, data, type,needCookie)
   }
 }
 

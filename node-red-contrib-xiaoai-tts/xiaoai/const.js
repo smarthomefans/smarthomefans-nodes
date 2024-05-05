@@ -14,7 +14,8 @@ const API = {
   SERVICE_AUTH: 'https://account.xiaomi.com/pass/serviceLoginAuth2',
   SERVICE_LOGIN: 'https://account.xiaomi.com/pass/serviceLogin',
   DEVICE_LIST: 'https://api2.mina.mi.com/admin/v2/device_list',
-  DEVICE_MI: 'https://i.mi.com/find/device'
+  DEVICE_MI: 'https://i.mi.com/find/device',
+  USER_PROFILE: 'https://userprofile.mina.mi.com'
 }
 
 module.exports = {

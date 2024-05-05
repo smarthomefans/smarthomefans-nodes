@@ -7,8 +7,8 @@
             account: { type: "SmartHome-Bot-Account", required: true },
             hass: { type: "Fanyi-Hass-Config", required: true },
             jsonConfig: { value: "", required: true },
-            deviceId: { value: "", required: true },
-            entityId: { value: "", required: true },
+            deviceId: { value: '', required: true },
+            entityId: { value: [], required: true },
             auto: { value: false }
         },
         inputs: 0,
@@ -19,6 +19,17 @@
         },
         label: function () {
             return this.name || this.deviceId || '默认设备';
+        },
+        oneditprepare: function () {
+            $("#node-input-entityId").select2({
+                data: [
+                    { value: "apple", label: "Apple" },
+                    { value: "banana", label: "Banana" },
+                    { value: "cherry", label: "Cherry" },
+                ],
+                tags: 'any',
+                displayIds: true
+            }).maximizeSelect2Height();
         }
     });
 </script>
@@ -55,11 +66,11 @@
     </div>
     <div class="form-row">
         <label for="node-input-entityId"><i class="fa fa-cog"></i> EntityId</label>
-        <input type="text" id="node-input-entityId">
+        <select id="node-input-entityId" multiple="multiple" style="width: 70%" ></select>
     </div>
     <div class="form-row">
         <label style='width:100px;'><i class="fa fa-sign-in"></i> 控制自动反馈</label>
-        <input type="checkbox" id="node-input-auto" style="display: inline-block; width: auto; vertical-align: top;">
+        <input type="checkbox" id="node-input-auto" style="display: inline-block; width: auto; vertical-align: top;"/>
     </div>
 </script>
 

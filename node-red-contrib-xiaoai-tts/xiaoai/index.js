@@ -10,7 +10,9 @@ const phone_device = require('./phone_device')
 const { play, pause, play_status, prev, next, toggle } = require('./mediaplayer')
 const { nlpResult, aiService } = require('./mibrain')
 const { wakeupTV, wakeupStop } = require('./tv')
+const { conversation } = require('./conversation')
 const { isObject } = require('./utils')
+const request = require('./request')
 
 class XiaoAi {
   constructor (user, pwd, sid) {
@@ -42,6 +44,29 @@ class XiaoAi {
   async getPhoneDevice (name) {
     return this.session.then(ss => phone_device(ss.cookie))
   }
+
+  async debug(url, method, headers = {}, data, type, needCookie) {
+    const ss = await this.session
+    if (headers && headers['Cookie'] && needCookie) {
+      if (headers['Cookie'].endsWith(';')) {
+        headers['Cookie'] = `${headers['Cookie']}${ss.cookie} `
+      }else{
+        headers['Cookie'] = `${headers['Cookie']};${ss.cookie} `
+      }
+    }else if (needCookie){
+      headers = Object.assign({'Cookie': ss.cookie} , headers)
+    }
+
+
+    return request({
+      url,
+      method,
+      headers,
+      data,
+      type
+    })
+  }
+
 
   async say (msg, deviceId) {
     const ss = await this.session
@@ -198,6 +223,21 @@ class XiaoAi {
       return deviceId
     }
     return this.liveDevice[0].deviceID
+  }
+
+  async conversation (limit = 1, deviceId) {
+    const ss = await this.session
+    const status = await this.checkStatus(deviceId)
+    if (!status) {
+      return Promise.resolve('无设备在线')
+    }
+
+    deviceId = this.valDeviceId(deviceId)
+
+    return await conversation(limit, {
+      cookie: ss.cookie,
+      deviceId: deviceId
+    })
   }
 }
 

@@ -5,7 +5,7 @@ const { randomString } = require('./utils')
 const { API } = require('./const')
 
 async function deviceNoise (cookie,deviceId) {
-  console.log('userId:'+cookie.userId+'\nserviceToken:'+cookie.serviceToken)
+  
   const rep = await request({
     url: API.DEVICE_MI+'/'+deviceId+'/noise',
     type: 'json',

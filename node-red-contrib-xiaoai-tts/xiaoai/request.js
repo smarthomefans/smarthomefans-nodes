@@ -30,11 +30,14 @@ function request ({
   const contentType =
     method == 'POST' ? 'application/x-www-form-urlencoded' : 'application/json'
 
+  if (!headers['Content-Type'] ) {
+    headers['Content-Type'] =  contentType
+  }
+
   const options = {
     method: method,
     headers: Object.assign(
       {
-        'Content-Type': contentType,
         Connection: 'keep-alive',
         'User-Agent': url.includes('mina.mi.com') ? MINA_UA : APP_UA,
         Accept: '*/*'
