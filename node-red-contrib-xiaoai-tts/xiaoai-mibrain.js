@@ -48,15 +48,27 @@ module.exports = RED => {
       const xiaoai = new Xiaoai(node, xiaomiConfig)
       node.on('input', async data => {
         for (const key in config) { if (config[key] != '' && config[key] != null) { data[key] = config[key] } }
-        data.payload = data.device || data.payload
-
+       
         try {
           const res = await xiaoai.conversation(data.limit, data.device)
           data.res = res
-          if (res.code == 0 && res.data && res?.data?.records?.length > 0 && res?.data?.records[0]?.recordGroup) {
-            const r = JSON.parse(res.data.records[0].recordGroup)
-            data.payload = r.user.content
-            data.record = r
+
+          try{
+            const r = JSON.parse(res.data)
+            let record = r?.records[0] || {}
+            const query = record.query
+            const answers = record.answers || []
+
+            const answer = answers.find((answer) => answer.type === 'TTS') || {}
+            const tts = answer.tts || {}
+            data.payload = query
+            data.answers = answers
+            data.answer = answer
+            answer.text = tts.text
+            answer.time = record.time
+
+          }catch(e) {
+            console.log(e)
           }
           node.status({ text: `获取对话记录成功:${data._msgid}` })
           node.send([data, null])

@@ -10,9 +10,10 @@ function conversation(operation, { cookie, deviceId }) {
     requestId: "app_ios_" + randomString(30),
   };
   const url = appendParam(
-    `${API.USER_PROFILE}/device_profile/conversation`,
+    `${API.USER_PROFILE}/device_profile/v2/conversation`,
     querystring.stringify(param)
   );
+
 
   return request({
     url,

@@ -188,7 +188,7 @@ class XiaoAi {
    * @param {*} deviceId
    * @returns
    */
-  async payUrl(url, type = 1, deviceId) {
+  async playUrl(url, type = 1, deviceId) {
     const ss = await this.session
     const status = await this.checkStatus(deviceId)
     if (!status) {
@@ -198,6 +198,7 @@ class XiaoAi {
     if (!url) {
       return Promise.resolve('播放链接不能为空')
     }
+    deviceId = this.valDeviceId(deviceId)
 
     return await payUrl(
       { url, type },
@@ -249,7 +250,8 @@ class XiaoAi {
   valDeviceId(deviceId) {
     if (deviceId) {
       return deviceId
-    }
+    
+  }
     return this.liveDevice[0].deviceID
   }
 
@@ -259,8 +261,8 @@ class XiaoAi {
     if (!status) {
       return Promise.resolve('无设备在线')
     }
-
-    device = this.findDeviceById(deviceId)
+    deviceId = this.valDeviceId(deviceId) 
+    let device = this.findDeviceById(deviceId)
 
     return await conversation(
       { limit, hardware: device.hardware },
@@ -270,11 +272,9 @@ class XiaoAi {
       }
     )
   }
-
+  
   findDeviceById(deviceId) {
-    if (!deviceId) {
-      return false
-    }
+    
     return this.liveDevice.find((device) => device.deviceID === deviceId)
   }
 }

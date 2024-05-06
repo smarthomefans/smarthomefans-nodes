@@ -51,16 +51,18 @@ function payUrl(operation, { cookie, deviceId }) {
   
   const param = {
     deviceId: deviceId,
-    message: { ...operation,  media: "app_ios" },
+    message: JSON.stringify({ ...operation,  media: "app_ios" }),
     method: "player_play_url",
     path: "mediaplayer",
     requestId: randomString(30),
   };
-  const url = appendParam(API.USBS, querystring.stringify(param));
+  
+  const url = API.USBS;
 
   return request({
     url,
     method: "POST",
+    data: param,
     headers: {
       Cookie: cookie,
     },

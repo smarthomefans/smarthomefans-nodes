@@ -80,16 +80,13 @@ module.exports = (RED) => {
         const xiaoai = new Xiaoai(node, xiaomiConfig)
 
         node.on('input', async (data) => {
-          for (const key in config) {
-            if (config[key] != '' && config[key] != null) {
-              data[key] = config[key]
-            }
-          }
-          data.payload = data.url || data.payload
+          
+          data.payload = config.url || data.payload
+          data.device = config.device || data.device
 
           try {
             await xiaoai.getSession()
-            const res = xiaoai.mediaPlayerUrl(
+            const res = await xiaoai.mediaPlayerUrl(
               data.payload,
               data.type,
               data.device

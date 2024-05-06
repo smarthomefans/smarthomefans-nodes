@@ -249,12 +249,19 @@ class XiaoAi {
     return this.client[action];
   }
 
-  async mediaPlayerUrl(url, type, deviceId) {
-    if (!this.client) {
-      await this.getSession();
-    }
+  mediaPlayerUrl(url, type, deviceId)  {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!this.client) {
+          await this.getSession();
+        }
 
-    return await this.client.payUrl(url, type, deviceId);
+        const data = await this.client.playUrl(url, type, deviceId);
+        resolve(data);
+      } catch (error) {
+        reject(error);
+      }
+    });
   }
 
   async mediaplayer1(action, device) {
