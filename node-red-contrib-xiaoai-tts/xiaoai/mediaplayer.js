@@ -47,4 +47,24 @@ function toggle ({ cookie, deviceId }) {
   return mediaplayer('toggle', 'player_play_operation', { cookie, deviceId })
 }
 
-module.exports = { play, pause, play_status, prev, next, toggle }
+function payUrl(operation, { cookie, deviceId }) {
+  
+  const param = {
+    deviceId: deviceId,
+    message: { ...operation,  media: "app_ios" },
+    method: "player_play_url",
+    path: "mediaplayer",
+    requestId: randomString(30),
+  };
+  const url = appendParam(API.USBS, querystring.stringify(param));
+
+  return request({
+    url,
+    method: "POST",
+    headers: {
+      Cookie: cookie,
+    },
+  });
+}
+
+module.exports = { play, pause, play_status, prev, next, toggle, payUrl };
