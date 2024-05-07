@@ -129,6 +129,11 @@ class XiaoAi {
     const ss = await this.session
 
     if (deviceId) {
+      // 检查一下，本地不存在设备列表就获取一次
+      if (this.liveDevice && !this.liveDevice.length) {
+        this.liveDevice = await device(ss.cookie)
+      }
+
       return Promise.resolve(true)
     } else {
       if (this.liveDevice && !this.liveDevice.length) {
